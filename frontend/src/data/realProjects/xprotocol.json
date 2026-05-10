@@ -1,0 +1,136 @@
+{
+  "id": "xprotocol",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 100000,
+    "fdv": 7000000,
+    "marketCap": 0,
+    "totalTokensForLiquidityPool": 14285714,
+    "totalTokensForRewardDistribution": 14285714,
+    "rewardsDistributionTimeInMonths": 6,
+    "finalSnapshotTimestamp": null,
+    "lbpWalletAddress": null,
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/usdc-logo.png",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://pub-df1c985ad6dd424eb47a5dd9739f1f10.r2.dev/images/xforge/xforge%20token%20logo.jpg",
+      "ticker": "KICK",
+      "mintAddress": null,
+      "decimals": 0,
+      "fixedTokenPriceInUsd": 0.007
+    }
+  },
+  "info": {
+    "claimUrl": null,
+    "tweetUrl": null,
+    "tokenContractUrl": null,
+    "poolContractUrl": null,
+
+    "projectType": "draft-pick",
+    "title": "XProtocol",
+    "subtitle": "XProtocol and XForge are the first node-operated blockchain DePIN phone designed for mass adoption, backed by Razer, Cogitent Ventures, Coinfund and Dragonfly.",
+
+    "logoUrl": "https://files.borgpad.com/images/xprotocol/xprotocol-logo.png",
+    "thumbnailUrl": "https://files.borgpad.com/images/xprotocol/xprotocol-thumbnail.png",
+    "squaredThumbnailUrl": "https://files.borgpad.com/images/xprotocol/xprotocol-thumbnail-square.png",
+
+    "origin": "The Singularity",
+    "sector": "DePIN and AI",
+    "tokenGenerationEventDate": "April 2025",
+    "targetFdv": "$26M - 50M",
+    "chain": {
+      "name": "Base",
+      "iconUrl": "https://files.borgpad.com/images/shared/base_logo.png"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://docs.xprotocol.org/x-protocol-litepaper/overview/xforge-depin-smartphone"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://files.borgpad.com/images/shared/raydium-logo-small.png",
+      "lbpType": "Mixed",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "",
+      "fullName": "TBD",
+      "position": "TBD",
+      "socials": [
+        {
+          "iconType": "WEB",
+          "url": "#",
+          "label": "Web"
+        },
+        {
+          "iconType": "X_TWITTER",
+          "url": "#",
+          "label": ""
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "iconType": "WEB",
+        "url": "https://xforgephone.com",
+        "label": ""
+      },
+      {
+        "iconType": "DISCORD",
+        "url": "https://discord.gg/xprotocol",
+        "label": ""
+      },
+      {
+        "iconType": "X_TWITTER",
+        "url": "https://x.com/xforgeofficial",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": null
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": null
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": null
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-03-18T18:15:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "2500"
+        }
+      }
+    ]
+  }
+}

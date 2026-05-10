@@ -1,0 +1,145 @@
+{
+  "id": "agentlauncher",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 100000,
+    "fdv": 7000000,
+    "marketCap": 1162123,
+    "totalTokensForLiquidityPool": 14285714,
+    "totalTokensForRewardDistribution": 14285714,
+    "rewardsDistributionTimeInMonths": 6,
+    "finalSnapshotTimestamp": "2025-02-18T15:00:00Z",
+    "lbpWalletAddress": "GSJ9jNvVfz3q7AUe4QtfRu17YRQDKxvccT4pkHmuNn9H",
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/usdc-logo.png",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://files.borgpad.com/images/cvagentlauncher/agentlauncher-token.png",
+      "ticker": "CVAI",
+      "mintAddress": "8TC4ZJA5cwB5gmLemBfPP95v1Mft82kHGF9a87kepNno",
+      "decimals": 9,
+      "fixedTokenPriceInUsd": 0.007
+    }
+  },
+  "info": {
+    "claimUrl": "https://app.streamflow.finance/airdrops",
+    "tweetUrl": "https://x.com/BorgPadHQ/status/1891872604023103775",
+    "tokenContractUrl": "8TC4ZJA5cwB5gmLemBfPP95v1Mft82kHGF9a87kepNno",
+    "poolContractUrl": null,
+
+    "projectType": "blitz",
+    "title": "Agentlauncher",
+    "subtitle": "The AI Launchpad, create your own AI agents & tokens on the platform",
+    "logoUrl": "https://files.borgpad.com/images/cvagentlauncher/cvagentlauncher-logo.png",
+    "thumbnailUrl": "https://files.borgpad.com/images/cvagentlauncher/cvagentlauncher-thumbnail.png",
+    "origin": "The Singularity",
+    "sector": "AI Launchpad",
+    "tokenGenerationEventDate": "18th February, 2025",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://files.borgpad.com/images/zkagi/solana-small.jpg"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://borgpad-data-room.notion.site/agentlauncher?pvs=4"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://files.borgpad.com/images/shared/raydium-logo-small.png",
+      "lbpType": "Mixed",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "https://files.borgpad.com/images/shared/borgpad-logo-green-bg.png",
+      "fullName": "SwissBorg",
+      "position": "Alpha Deal",
+      "socials": [
+        {
+          "url": "https://swissborg.com",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": ""
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://www.agentlauncher.io/",
+        "__comment": "Possible values: \"MEDIUM\" | \"LINKED_IN\" | \"WEB\" | \"X_TWITTER\"",
+        "iconType": "WEB",
+        "label": ""
+      },
+      {
+        "url": "https://x.com/CVAgentlauncher",
+        "iconType": "X_TWITTER",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": "2025-02-07T10:00:00Z"
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": "2025-02-18T15:00:00Z"
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": "2025-02-18T17:00:00Z"
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": "2025-02-18T17:00:00Z"
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": "2025-07-18T23:59:00Z"
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier10",
+        "label": "Borgers Club.",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "BORG",
+            "tokenAmount": "1000",
+            "tokenMintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z"
+          }
+        ],
+        "benefits": {
+          "startDate": "2025-02-18T15:00:00Z",
+          "minInvestment": "100",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-02-18T15:15:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "1000"
+        }
+      }
+    ]
+  }
+}

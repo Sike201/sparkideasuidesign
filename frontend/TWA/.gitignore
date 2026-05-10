@@ -1,0 +1,14 @@
+# Bubblewrap / Gradle build artifacts — regenerated on every `bubblewrap build`,
+# can be 50+ MB, no value tracking them.
+.gradle/
+
+# Signed / unsigned APK + AAB outputs. They get rebuilt locally and uploaded
+# straight to the Solana dApp Store via the publishing CLI; no need to commit.
+app-release-signed.apk
+app-release-signed.apk.idsig
+app-release-unsigned-aligned.apk
+app-release-bundle.aab
+
+# Local backup of the previous keystore — kept on disk in case the old
+# password is ever recovered, but should never go to the repo.
+android.keystore.OLD

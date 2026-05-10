@@ -1,0 +1,23 @@
+shape: sequence_diagram
+
+# Actors
+fe: BP FE\n(Web)
+tw: Twitter
+be: BP BE\n(CF Workers)
+db: D1\n(Database)
+# os: Other\nSources
+
+fe."User clicks 'Follow on X'"
+
+fe -> tw: User is redirected to Twitter
+
+tw."User authorizes"
+
+tw -> be: Twitter redirects to BE with code
+
+be."Fetch user data"
+be."Check if user is following BorgPad"
+
+be <-> db: Store the result in db
+
+be -> fe: Redirects back to frontend

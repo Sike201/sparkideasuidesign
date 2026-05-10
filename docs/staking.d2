@@ -1,0 +1,38 @@
+shape: sequence_diagram
+
+
+# Actors
+fe: BP FE\n(Web)
+be: BP BE\n(CF Workers)
+# db: D1\n(Database)
+# sp: LBP Program
+
+fe."Initiate transfer of X Borg (raised token)\nfrom User wallet to BorgPad wallet"
+
+fe."Create the deposit tx and sign it"
+
+fe -> be: "Send serialized \ntx to backend"
+
+be."Deserialize transaction\nextract amount and user address"
+
+be."A LOT of validations done here (eligibility, etc.)"
+
+Validations: {
+    be."Check user eligibility tier for project"
+    be."Check if user investment > 0"
+    be."Check if user investment < tier.maxInvestment"
+    be."Check if user investment < tier.maxInvestment"
+    be."Check if current_date > tier.startDate"
+
+    be."?Check\nsum_deposit_amount + user_deposit_amount < max_cap?"
+    be."Check if user has enough funds"
+    be."Check if we are in the SALE_OPENS phase"
+}
+
+be -> fe: "If NOT OK, return error to frontend"
+
+be."If OK, execute the tx on-chain\nand store the details in the db"
+
+be."Mint an IOU NFT"
+
+be -> fe: "200 OK"

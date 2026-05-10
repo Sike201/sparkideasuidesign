@@ -1,0 +1,41 @@
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'].input-slider::-webkit-slider-thumb {
+      width: 16px;
+      height: 16px;
+      -webkit-appearance: none;
+      border-radius: 50%;
+      background: #ACFF73;
+      transition: opacity 200ms ease;
+    } 
+  }
+  
+  input[type='range'].show-thumb::-webkit-slider-thumb {
+    opacity: 1
+  }
+  
+  /* Firefox */ 
+   input[type="range"].input-slider::-moz-range-progress {
+  background-color: #ACFF73; 
+  }
+  input[type="range"].input-slider::-moz-range-track {  
+  background-color: rgb(255, 255, 255, 0);
+  } 
+  
+  /* Internet Explorer */
+  input[type="range"].input-slider::-ms-fill-lower {
+  background-color: #ACFF73; 
+  }
+  input[type="range"].input-slider::-ms-fill-upper {  
+  background-color: rgb(255, 255, 255, 0);
+  }   
+  
+  .input-slider {
+    /* background: #ACFF73; */
+    border: none;
+    border-radius: 0;
+    height: 6px;
+    outline: none;
+    transition: background 450ms ease-in;
+    -webkit-appearance: none;
+  }

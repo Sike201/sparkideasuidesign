@@ -1,0 +1,12 @@
+.anchor
+target/
+node_modules/
+.DS_Store
+dist/
+test-ledger/
+
+# Keypairs and secrets — NEVER commit private keys
+*.keypair.json
+*.secret.json
+admin.json
+164VmptkoC9jPa3x46QNQvEvU34oaZFrh8f12VomfSu.json

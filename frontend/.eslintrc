@@ -1,0 +1,106 @@
+{
+  "plugins": [
+    "react-hooks"
+  ],
+  "ignorePatterns": ["functions/"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2
+      }
+    ],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "ignoredNodes": [
+          "JSXAttribute",
+          "JSXSpreadAttribute"
+        ],
+        "SwitchCase": 1
+      }
+    ],
+    "no-multi-spaces": "warn",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/jsx-indent": [
+      "warn",
+      2
+    ],
+    "react/jsx-indent-props": [
+      "warn",
+      2
+    ],
+    "react/jsx-curly-spacing": [
+      "warn",
+      {
+        "when": "never"
+      }
+    ],
+    "react/jsx-tag-spacing": [
+      "warn",
+      {
+        "closingSlash": "never",
+        "beforeSelfClosing": "always",
+        "afterOpening": "never",
+        "beforeClosing": "allow"
+      }
+    ],
+    "react/jsx-max-props-per-line": [
+      "warn",
+      {
+        "maximum": 4
+      }
+    ],
+    "eqeqeq": [
+      "warn",
+      "always"
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}

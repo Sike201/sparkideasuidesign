@@ -1,0 +1,137 @@
+{
+  "id": "borgy",
+  "config": {
+    "cluster": "mainnet",
+
+    "lpPositionToBeBurned": true,
+
+    "raiseTargetInUsd": 50000,
+    "fdv": 1000000,
+    "marketCap": 50000,
+
+    "totalTokensForLiquidityPool": 3888888889,
+    "totalTokensForRewardDistribution": 3888888889,
+
+    "rewardsDistributionTimeInMonths": 6,
+
+    "finalSnapshotTimestamp": "2024-12-10T13:00:00Z",
+
+    "lbpWalletAddress": "4SmMETL98BAR6W5DyZm661NbTpY3RUJNeeJMAHxvXia4",
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/images/borgy/borgy-logo.webp",
+      "ticker": "BORG",
+
+      "mintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z",
+      "decimals": 9,
+      "fixedTokenPriceInUsd": 0.341783,
+      "coinGeckoName": "swissborg"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://files.borgpad.com/images/borgy/borgy-logo.webp",
+      "ticker": "BORGY",
+
+      "mintAddress": "BorGY4ub2Fz4RLboGxnuxWdZts7EKhUTB624AFmfCgX",
+      "decimals": 5,
+      "fixedTokenPriceInUsd": 0.00001286
+    }
+  },
+  "info": {
+    "claimUrl": "https://app.streamflow.finance/airdrops",
+    "tweetUrl": "https://x.com/BorgPadHQ/status/1866470792734572572",
+    "tokenContractUrl": "https://jup.ag/swap/SOL-BorGY4ub2Fz4RLboGxnuxWdZts7EKhUTB624AFmfCgX",
+    "poolContractUrl": "https://raydium.io/liquidity/increase/?mode=add&pool_id=BLNidhiuiovET21aeQtnj7wQNdXdvPSeLo3ZjUCqKMzK",
+
+    "projectType": "blitz",
+    "title": "BORGY",
+    "subtitle": "The Community Pet of SwissBorg",
+    "logoUrl": "https://files.borgpad.com/images/borgy/borgy-logo.webp",
+    "thumbnailUrl": "https://files.borgpad.com/images/borgy/borgy-thumbnail.png",
+    "origin": "The Alps 🏔️",
+    "sector": "Meme",
+    "tokenGenerationEventDate": "10th December, 2024",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://i.redd.it/yfsqpy0126r81.jpg"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://drive.google.com/file/d/1ELtP99cdMST5MyT17qnCCkvfbA09v2Tr/view"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://cdn.prod.website-files.com/614c99cf4f23700c8aa3752a/637db1045802ea0c2b7dbcea_public.png",
+      "lbpType": "Concentrated Liquidity",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "https://s2.coinmarketcap.com/static/img/coins/200x200/2499.png",
+      "fullName": "SwissBorg",
+      "position": "Community Initiative",
+      "socials": [
+        {
+          "url": "swissborg.com",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": "X (ex-Twitter)"
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://borgy.ch",
+        "__comment": "Possible values: \"MEDIUM\" | \"LINKED_IN\" | \"WEB\" | \"X_TWITTER\"",
+        "iconType": "WEB",
+        "label": ""
+      },
+      {
+        "url": "https://x.com/borgysol",
+        "iconType": "X_TWITTER",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": "2024-12-04T23:00:00Z"
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": "2024-12-10T13:00:00Z"
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": "2024-12-10T13:10:00Z"
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": "2024-12-11T16:00:00Z"
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": "2025-05-12T23:00:00Z"
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "description": "Access to sale at 2 PM CET. Max Investment $250",
+        "quests": [],
+        "benefits": {
+          "startDate": "2024-12-10T13:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "250"
+        }
+      }
+    ]
+  }
+}

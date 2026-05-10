@@ -1,0 +1,134 @@
+{
+  "id": "intercellar",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 0,
+    "fdv": 0,
+    "marketCap": 0,
+    "totalTokensForLiquidityPool": 0,
+    "totalTokensForRewardDistribution": 0,
+    "rewardsDistributionTimeInMonths": 6,
+    "finalSnapshotTimestamp": null,
+    "lbpWalletAddress": null,
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/usdc-logo.png",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://files.borgpad.com/images/intercellar/logo.jpg",
+      "ticker": "",
+      "mintAddress": null,
+      "decimals": 0,
+      "fixedTokenPriceInUsd": 0
+    }
+  },
+  "info": {
+    "claimUrl": null,
+    "tweetUrl": null,
+    "tokenContractUrl": null,
+    "poolContractUrl": null,
+
+    "projectType": "draft-pick",
+    "title": "Intercellar",
+    "subtitle": "The Tokenisation of Good Taste.",
+    "logoUrl": "https://files.borgpad.com/images/intercellar/logo.jpg",
+    "thumbnailUrl": "https://files.borgpad.com/images/intercellar/thumbnail-intercellar.png",
+    "origin": "web3",
+    "sector": "RWA",
+    "tokenGenerationEventDate": "Q2",
+    "targetFdv": "$2m - $5m",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://files.borgpad.com/images/shared/solana-logo.png"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://docs.google.com/spreadsheets/d/1Rm4a5H1wFUzvyHTYO2_yx_bz3VcMoyIfHKWtgH8HJog"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://cdn.prod.website-files.com/614c99cf4f23700c8aa3752a/637db1045802ea0c2b7dbcea_public.png",
+      "lbpType": "Mixte",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "https://s2.coinmarketcap.com/static/img/coins/200x200/2499.png",
+      "fullName": "SwissBorg",
+      "position": "Alpha Deal",
+      "socials": [
+        {
+          "url": "https://swissborg.com",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": "X (ex-Twitter)"
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://hub.xyz/intercellar",
+        "iconType": "WEB",
+        "label": ""
+      },
+      {
+        "url": "https://x.com/InterCellar_",
+        "iconType": "X_TWITTER",
+        "label": ""
+      },
+      {
+        "url": "https://t.me/intercellar_official",
+        "iconType": "TELEGRAM",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": null
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": null
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": null
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "description": "",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-12-31T23:59:59Z",
+          "minInvestment": "10",
+          "maxInvestment": "2500"
+        }
+      }
+    ]
+  }
+}

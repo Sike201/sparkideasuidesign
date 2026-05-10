@@ -1,0 +1,438 @@
+import type { Builder, Hackathon } from "./types";
+
+const mockBuilders: Builder[] = [
+  {
+    id: "b1",
+    username: "alice.sol",
+    display_name: "Alice Chen",
+    avatar_url: "",
+    position: "Software Engineer",
+    city: "San Francisco",
+    about:
+      "Full-stack dev building on Solana since 2022. Focused on DeFi protocols and portfolio infrastructure. Previously at Jump Crypto.",
+    skills: ["Rust", "Anchor", "TypeScript", "React"],
+    i_am_a: ["Software Engineer", "Protocol Engineer"],
+    looking_for: ["Designer", "Backend Dev"],
+    interested_in: ["DeFi", "DePIN", "Dev Infra"],
+    languages: ["English", "French"],
+    looking_for_teammates_text:
+      "Need a strong designer and a Rust dev to build out a portfolio dashboard with real-time analytics.",
+    is_student: false,
+    twitter_url: "https://twitter.com/alice_sol",
+    github_url: "https://github.com/alicesol",
+    telegram_url: "https://t.me/alicesol",
+    wallet_address: "8xF3kLm9WqPzR4vB7tN2cY6dA1eJ5hG0",
+    claimed: true,
+    source: "colosseum",
+    created_at: "2024-06-01T00:00:00Z",
+  },
+  {
+    id: "b2",
+    username: "bob_builder",
+    display_name: "Bob Martinez",
+    avatar_url: "",
+    position: "Protocol Engineer",
+    city: "Berlin",
+    about:
+      "Smart contract specialist with 4 years of Solana experience. Built multiple DeFi protocols from scratch.",
+    skills: ["Rust", "Solana", "Smart Contracts", "Python"],
+    i_am_a: ["Protocol Engineer", "Backend Dev"],
+    looking_for: ["Frontend Dev", "Designer"],
+    interested_in: ["DeFi", "Dev Infra"],
+    languages: ["English", "Spanish"],
+    looking_for_teammates_text:
+      "Looking for a React dev who wants to build the next-gen DeFi dashboard.",
+    is_student: false,
+    twitter_url: "https://twitter.com/bob_builder",
+    github_url: "https://github.com/bobbuilder",
+    telegram_url: "",
+    wallet_address: "4mN2pQ8rT5wX1yZ3vB6cD7eF9gH0jK",
+    claimed: true,
+    source: "colosseum",
+    created_at: "2024-05-15T00:00:00Z",
+  },
+  {
+    id: "b3",
+    username: "carol.dev",
+    display_name: "Carol Wang",
+    avatar_url: "",
+    position: "Full Stack Developer",
+    city: "Singapore",
+    about:
+      "Building consumer crypto apps. Previously shipped 3 products at a Solana hackathon.",
+    skills: ["TypeScript", "React", "Node.js", "Solana"],
+    i_am_a: ["Software Engineer", "Frontend Dev"],
+    looking_for: ["Protocol Engineer"],
+    interested_in: ["Consumer", "Social", "Gaming"],
+    languages: ["English", "Mandarin"],
+    looking_for_teammates_text: "",
+    is_student: false,
+    twitter_url: "https://twitter.com/carol_dev",
+    github_url: "https://github.com/caroldev",
+    telegram_url: "https://t.me/caroldev",
+    wallet_address: "7vC9dE2fG4hJ6kL8mN0pQ1rS3tU5wX",
+    claimed: false,
+    source: "colosseum",
+    created_at: "2024-07-01T00:00:00Z",
+  },
+  {
+    id: "b4",
+    username: "dave_onchain",
+    display_name: "Dave Kumar",
+    avatar_url: "",
+    position: "AI/ML Engineer",
+    city: "Bangalore",
+    about:
+      "ML engineer bringing AI to on-chain data. Building prediction models for DeFi protocols.",
+    skills: ["Python", "TypeScript", "Rust", "GraphQL"],
+    i_am_a: ["AI/ML", "Backend Dev"],
+    looking_for: ["Frontend Dev", "Designer"],
+    interested_in: ["AI", "DeFi", "Data"],
+    languages: ["English", "Hindi"],
+    looking_for_teammates_text:
+      "Looking for frontend devs who want to build AI-powered crypto tools.",
+    is_student: false,
+    twitter_url: "https://twitter.com/dave_onchain",
+    github_url: "https://github.com/daveonchain",
+    telegram_url: "",
+    wallet_address: "2aB4cD6eF8gH0iJ2kL4mN6oP8qR0sT",
+    claimed: false,
+    source: "colosseum",
+    created_at: "2024-08-10T00:00:00Z",
+  },
+  {
+    id: "b5",
+    username: "emma_design",
+    display_name: "Emma Larsson",
+    avatar_url: "",
+    position: "Designer",
+    city: "Stockholm",
+    about:
+      "Product designer focused on Web3 UX. Designed interfaces for 5+ DeFi protocols.",
+    skills: ["Figma", "React", "CSS", "Motion Design"],
+    i_am_a: ["Designer", "Frontend Dev"],
+    looking_for: ["Protocol Engineer", "Backend Dev"],
+    interested_in: ["Consumer", "DeFi", "Social"],
+    languages: ["English", "Swedish"],
+    looking_for_teammates_text: "",
+    is_student: false,
+    twitter_url: "https://twitter.com/emma_design",
+    github_url: "https://github.com/emmalarsson",
+    telegram_url: "https://t.me/emma_design",
+    wallet_address: "9xY1zA3bC5dE7fG9hI1jK3lM5nO7pQ",
+    claimed: false,
+    source: "colosseum",
+    created_at: "2024-09-01T00:00:00Z",
+  },
+];
+
+// Helper to get future date
+const futureDate = (days: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString();
+};
+
+const pastDate = (days: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d.toISOString();
+};
+
+export const mockHackathons: Hackathon[] = [
+  {
+    id: "h1",
+    idea_title: "AI-Powered Portfolio Tracker",
+    idea_slug: "ai-portfolio-tracker",
+    idea_image_url: "",
+    usdg_amount: 50000,
+    status: "open",
+    countdown_target: futureDate(4),
+    rules_md: `### Duration\n6 weeks\n\n### Deliverables\n- Working MVP with core features\n- Open-source code on GitHub\n- 3-minute demo video\n- Technical documentation\n\n### Selection\nWinner decided via decision market on Combinator.trade. Holders trade on builder proposals.\n\n### Milestones\nFunds released per milestone (split: 30% / 30% / 40%). Each milestone requires a deliverable submission reviewed by the community.`,
+    combinator_chart_url: "https://combinator.trade/market/ai-portfolio",
+    combinator_trade_url: "https://combinator.trade/market/ai-portfolio",
+    milestone_split: [30, 30, 40],
+    milestones: [
+      {
+        id: "m1",
+        hackathon_id: "h1",
+        milestone_order: 1,
+        title: "MVP Demo",
+        amount_usdg: 15000,
+        deadline: futureDate(14),
+        status: "locked",
+      },
+      {
+        id: "m2",
+        hackathon_id: "h1",
+        milestone_order: 2,
+        title: "Beta Launch",
+        amount_usdg: 15000,
+        deadline: futureDate(28),
+        status: "locked",
+      },
+      {
+        id: "m3",
+        hackathon_id: "h1",
+        milestone_order: 3,
+        title: "Final Delivery",
+        amount_usdg: 20000,
+        deadline: futureDate(42),
+        status: "locked",
+      },
+    ],
+    proposals: [
+      {
+        id: "p1",
+        hackathon_id: "h1",
+        builder_id: "b1",
+        builder: mockBuilders[0],
+        title: "Solana Portfolio Tracker with AI Insights",
+        description_md:
+          "AI-powered portfolio analytics that aggregates all your wallets and provides actionable insights using on-chain data and market sentiment analysis.",
+        approach_md: "Using Helius RPC for real-time data, OpenAI for analysis.",
+        timeline_md: "Week 1-2: Data pipeline. Week 3-4: AI layer. Week 5-6: Frontend.",
+        github_url: "https://github.com/alicesol/portfolio-tracker",
+        demo_url: "",
+        team_members: [],
+        market_odds: undefined,
+        submitted_at: pastDate(2),
+      },
+      {
+        id: "p2",
+        hackathon_id: "h1",
+        builder_id: "b2",
+        builder: mockBuilders[1],
+        title: "DeFi Dashboard with Predictive Analytics",
+        description_md:
+          "A comprehensive DeFi dashboard that tracks portfolio performance across protocols and uses ML models to predict yield opportunities.",
+        approach_md: "Anchor program for data indexing, Python ML backend.",
+        timeline_md: "Week 1: Indexer. Week 2-3: ML models. Week 4-6: Frontend + polish.",
+        github_url: "https://github.com/bobbuilder/defi-dashboard",
+        demo_url: "",
+        team_members: [],
+        market_odds: undefined,
+        submitted_at: pastDate(1),
+      },
+      {
+        id: "p3",
+        hackathon_id: "h1",
+        builder_id: "b3",
+        builder: mockBuilders[2],
+        title: "WalletLens — Visual Portfolio Intelligence",
+        description_md:
+          "Beautiful, consumer-friendly portfolio tracker with AI-generated daily briefs and social features for sharing insights.",
+        approach_md: "React + Framer Motion frontend, Solana FM API, GPT-4 summaries.",
+        timeline_md: "Week 1-2: Core app. Week 3-4: AI features. Week 5-6: Social layer.",
+        github_url: "https://github.com/caroldev/walletlens",
+        demo_url: "",
+        team_members: [],
+        market_odds: undefined,
+        submitted_at: pastDate(3),
+      },
+    ],
+    created_at: pastDate(7),
+  },
+  {
+    id: "h2",
+    idea_title: "DePIN Oracle Network",
+    idea_slug: "depin-oracle-network",
+    idea_image_url: "",
+    usdg_amount: 30000,
+    status: "voting",
+    countdown_target: futureDate(2),
+    rules_md: `### Duration\n4 weeks\n\n### Deliverables\n- Working oracle node\n- SDK for integration\n- Documentation\n\n### Selection\nDecision market on Combinator.trade.`,
+    combinator_chart_url: "https://combinator.trade/market/depin-oracle",
+    combinator_trade_url: "https://combinator.trade/market/depin-oracle",
+    milestone_split: [30, 30, 40],
+    milestones: [
+      {
+        id: "m4",
+        hackathon_id: "h2",
+        milestone_order: 1,
+        title: "Oracle Node MVP",
+        amount_usdg: 9000,
+        deadline: futureDate(7),
+        status: "active",
+      },
+      {
+        id: "m5",
+        hackathon_id: "h2",
+        milestone_order: 2,
+        title: "SDK Release",
+        amount_usdg: 9000,
+        deadline: futureDate(21),
+        status: "locked",
+      },
+      {
+        id: "m6",
+        hackathon_id: "h2",
+        milestone_order: 3,
+        title: "Mainnet Deployment",
+        amount_usdg: 12000,
+        deadline: futureDate(28),
+        status: "locked",
+      },
+    ],
+    proposals: [
+      {
+        id: "p4",
+        hackathon_id: "h2",
+        builder_id: "b2",
+        builder: mockBuilders[1],
+        title: "Lightweight DePIN Oracle with Proof of Location",
+        description_md:
+          "A lightweight oracle node that verifies physical device data using proof-of-location and submits it on-chain.",
+        approach_md: "Rust oracle node, Anchor program for verification.",
+        timeline_md: "2 weeks node, 1 week SDK, 1 week docs.",
+        github_url: "https://github.com/bobbuilder/depin-oracle",
+        demo_url: "",
+        team_members: [],
+        market_odds: 0.42,
+        submitted_at: pastDate(10),
+      },
+      {
+        id: "p5",
+        hackathon_id: "h2",
+        builder_id: "b4",
+        builder: mockBuilders[3],
+        title: "AI-Enhanced DePIN Data Feed",
+        description_md:
+          "Oracle network that uses ML to validate and filter DePIN sensor data before posting on-chain.",
+        approach_md: "Python ML pipeline, Solana program for data posting.",
+        timeline_md: "Week 1: ML pipeline. Week 2-3: Oracle. Week 4: Integration.",
+        github_url: "https://github.com/daveonchain/depin-ai-feed",
+        demo_url: "",
+        team_members: [],
+        market_odds: 0.34,
+        submitted_at: pastDate(8),
+      },
+    ],
+    created_at: pastDate(14),
+  },
+  {
+    id: "h3",
+    idea_title: "Solana Wrapped 2026",
+    idea_slug: "solana-wrapped-2026",
+    idea_image_url: "",
+    usdg_amount: 25000,
+    status: "completed",
+    countdown_target: pastDate(5),
+    rules_md: `### Duration\n3 weeks\n\n### Deliverables\n- Working web app\n- Shareable cards\n\n### Selection\nDecision market on Combinator.trade.`,
+    combinator_chart_url: "https://combinator.trade/market/solana-wrapped",
+    combinator_trade_url: "https://combinator.trade/market/solana-wrapped",
+    milestone_split: [40, 30, 30],
+    milestones: [
+      {
+        id: "m7",
+        hackathon_id: "h3",
+        milestone_order: 1,
+        title: "Data Pipeline",
+        amount_usdg: 10000,
+        deadline: pastDate(21),
+        status: "paid",
+        paid_to: "carol.dev",
+      },
+      {
+        id: "m8",
+        hackathon_id: "h3",
+        milestone_order: 2,
+        title: "Web App",
+        amount_usdg: 7500,
+        deadline: pastDate(14),
+        status: "paid",
+        paid_to: "carol.dev",
+      },
+      {
+        id: "m9",
+        hackathon_id: "h3",
+        milestone_order: 3,
+        title: "Social Sharing",
+        amount_usdg: 7500,
+        deadline: pastDate(7),
+        status: "completed",
+      },
+    ],
+    proposals: [
+      {
+        id: "p6",
+        hackathon_id: "h3",
+        builder_id: "b3",
+        builder: mockBuilders[2],
+        title: "Wrapped 2026 — Your Year On-Chain",
+        description_md:
+          "Beautiful year-in-review for every Solana wallet. Shareable cards with key stats, top tokens, and memorable transactions.",
+        approach_md: "React + Canvas API for card generation.",
+        timeline_md: "1 week data, 1 week cards, 1 week social.",
+        github_url: "https://github.com/caroldev/solana-wrapped",
+        demo_url: "https://wrapped.solana.example",
+        team_members: [],
+        market_odds: 0.58,
+        submitted_at: pastDate(30),
+      },
+    ],
+    created_at: pastDate(35),
+  },
+  {
+    id: "h4",
+    idea_title: "Cross-Chain Bridge Dashboard",
+    idea_slug: "cross-chain-bridge-dashboard",
+    idea_image_url: "",
+    usdg_amount: 40000,
+    status: "upcoming",
+    countdown_target: futureDate(10),
+    rules_md: "",
+    combinator_chart_url: "",
+    combinator_trade_url: "",
+    milestone_split: [30, 30, 40],
+    milestones: [
+      {
+        id: "m10",
+        hackathon_id: "h4",
+        milestone_order: 1,
+        title: "Bridge Aggregator MVP",
+        amount_usdg: 12000,
+        deadline: futureDate(24),
+        status: "locked",
+      },
+      {
+        id: "m11",
+        hackathon_id: "h4",
+        milestone_order: 2,
+        title: "Analytics Dashboard",
+        amount_usdg: 12000,
+        deadline: futureDate(38),
+        status: "locked",
+      },
+      {
+        id: "m12",
+        hackathon_id: "h4",
+        milestone_order: 3,
+        title: "Production Launch",
+        amount_usdg: 16000,
+        deadline: futureDate(52),
+        status: "locked",
+      },
+    ],
+    proposals: [],
+    created_at: pastDate(3),
+  },
+];
+
+export const mockBuildersList: Builder[] = mockBuilders;
+
+export function getMockHackathon(id: string): Hackathon | undefined {
+  return mockHackathons.find((h) => h.id === id);
+}
+
+export function getMockBuilder(username: string): Builder | undefined {
+  return mockBuilders.find((b) => b.username === username);
+}
+
+export function getMockBuilderProposals(username: string) {
+  return mockHackathons.flatMap((h) =>
+    h.proposals
+      .filter((p) => p.builder.username === username)
+      .map((p) => ({ ...p, hackathon: h }))
+  );
+}

@@ -1,0 +1,12 @@
+// TODO handle all error codes correctly on the frontend
+export type ErrorCodes =
+  | 'USER_NOT_ELIGIBLE'
+  | 'PROJECT_RAISE_TARGET_REACHED'
+
+  | 'SALE_NOT_OPEN_FOR_PROJECT'
+  | 'SALE_CLOSED_FOR_PROJECT'
+
+  | 'SALE_NOT_OPEN_FOR_ELIGIBILITY_TIER'
+
+  | 'USER_MAX_INVESTMENT_EXCEEDED'
+  | 'USER_MIN_INVESTMENT_INSUFFICIENT'

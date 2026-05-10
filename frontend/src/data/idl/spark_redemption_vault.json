@@ -1,0 +1,989 @@
+{
+  "address": "HjxL5eioDknBcoQAymHQkn9VHzWRqZe3CtSyw7U8vRq1",
+  "metadata": {
+    "name": "spark_redemption_vault",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Spark: redemption vault — burn loser Ideacoin tokens against USDG at a fixed rate after a failed TWAP decision market"
+  },
+  "instructions": [
+    {
+      "name": "initialize_and_deposit",
+      "docs": [
+        "Initialize the redemption vault for an idea AND deposit the full USDG pot in one tx.",
+        "",
+        "* `idea_id`       — human-readable idea identifier (≤ 64 chars, display only)",
+        "* `vault_seed`    — SHA256(idea_id), used as the PDA seed (32-byte cap)",
+        "* `rate_num`      — numerator of the fixed redemption rate",
+        "* `rate_den`      — denominator of the fixed redemption rate",
+        "→ `usdg_out = floor(tokens_in * rate_num / rate_den)`",
+        "* `deposit_amount`— amount of USDG (base units) the admin seeds the vault with"
+      ],
+      "discriminator": [
+        18,
+        152,
+        143,
+        221,
+        235,
+        239,
+        245,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "docs": [
+            "Only the hard-coded INITIAL_ADMIN can create vaults.",
+            "Prevents third parties from squatting a PDA with bogus rate/deposit params."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "docs": [
+            "One vault per idea_id. Seed = SHA256(idea_id) to stay within Solana's 32-byte limit."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  101,
+                  109,
+                  112,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "vault_seed"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "The loser Ideacoin mint. Decimals are read for event logging; the burn itself",
+            "is checked against this mint."
+          ]
+        },
+        {
+          "name": "usdg_mint",
+          "docs": [
+            "USDG mint used as the payout token."
+          ]
+        },
+        {
+          "name": "authority_usdg_account",
+          "docs": [
+            "Authority's USDG source account — the pot is pulled from here."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_usdg_ata",
+          "docs": [
+            "Vault's USDG ATA. Authority is the vault PDA so the program can sign transfers."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "usdg_token_program"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "idea_id",
+          "type": "string"
+        },
+        {
+          "name": "vault_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "rate_num",
+          "type": "u64"
+        },
+        {
+          "name": "rate_den",
+          "type": "u64"
+        },
+        {
+          "name": "deposit_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "reclaim_remainder",
+      "docs": [
+        "After the deadline, the authority can sweep the remaining USDG, close the vault USDG ATA,",
+        "and close the vault account itself — refunding the rent to the authority."
+      ],
+      "discriminator": [
+        146,
+        231,
+        239,
+        179,
+        221,
+        135,
+        118,
+        196
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "docs": [
+            "Closed at the end of the ix — rent refunded to `authority`."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  101,
+                  109,
+                  112,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault.vault_seed",
+                "account": "RedemptionVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdg_mint"
+        },
+        {
+          "name": "vault_usdg_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "authority_usdg_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "authority"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "usdg_token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "redeem",
+      "docs": [
+        "User burns `tokens_in` of the loser Ideacoin and receives USDG at the fixed rate.",
+        "Callable until `vault.deadline`."
+      ],
+      "discriminator": [
+        184,
+        12,
+        86,
+        149,
+        70,
+        196,
+        97,
+        225
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  100,
+                  101,
+                  109,
+                  112,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vault.vault_seed",
+                "account": "RedemptionVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_mint",
+          "docs": [
+            "Loser Ideacoin mint — MUST be writable because `burn` decreases the mint's supply."
+          ],
+          "writable": true
+        },
+        {
+          "name": "usdg_mint"
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's loser-token account — tokens are burned from here."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "user_usdg_account",
+          "docs": [
+            "User's USDG destination account — created if it doesn't exist."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_usdg_ata",
+          "docs": [
+            "Vault's USDG ATA (source for the payout)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "vault"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_token_program"
+              },
+              {
+                "kind": "account",
+                "path": "usdg_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "docs": [
+            "Token program for the loser Ideacoin (may be Token or Token-2022)."
+          ]
+        },
+        {
+          "name": "usdg_token_program",
+          "docs": [
+            "Token program for USDG (mainnet USDG is classic SPL Token)."
+          ]
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        }
+      ],
+      "args": [
+        {
+          "name": "tokens_in",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "RedemptionVault",
+      "discriminator": [
+        76,
+        171,
+        19,
+        58,
+        196,
+        239,
+        84,
+        140
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "RedemptionInitialized",
+      "discriminator": [
+        106,
+        200,
+        100,
+        114,
+        148,
+        100,
+        38,
+        203
+      ]
+    },
+    {
+      "name": "RemainderReclaimed",
+      "discriminator": [
+        32,
+        133,
+        173,
+        48,
+        219,
+        245,
+        35,
+        246
+      ]
+    },
+    {
+      "name": "UserRedeemed",
+      "discriminator": [
+        158,
+        165,
+        185,
+        4,
+        94,
+        204,
+        37,
+        237
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "IdeaIdEmpty",
+      "msg": "Idea id cannot be empty"
+    },
+    {
+      "code": 6001,
+      "name": "IdeaIdTooLong",
+      "msg": "Idea id must be 64 characters or less"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidVaultSeed",
+      "msg": "Vault seed must be SHA256(idea_id)"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidRate",
+      "msg": "Rate numerator and denominator must be > 0"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6005,
+      "name": "PayoutTooSmall",
+      "msg": "Payout rounds to zero — increase amount redeemed"
+    },
+    {
+      "code": 6006,
+      "name": "InsufficientVaultBalance",
+      "msg": "Vault USDG balance is insufficient for this redemption"
+    },
+    {
+      "code": 6007,
+      "name": "UnauthorizedMint",
+      "msg": "Unauthorized USDG mint"
+    },
+    {
+      "code": 6008,
+      "name": "VaultClosed",
+      "msg": "Vault is closed"
+    },
+    {
+      "code": 6009,
+      "name": "DeadlinePassed",
+      "msg": "Redemption deadline has passed"
+    },
+    {
+      "code": 6010,
+      "name": "DeadlineNotReached",
+      "msg": "Redemption deadline has not been reached yet"
+    },
+    {
+      "code": 6011,
+      "name": "NothingToReclaim",
+      "msg": "Nothing to reclaim — vault is empty"
+    },
+    {
+      "code": 6012,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6013,
+      "name": "Unauthorized",
+      "msg": "Signer is not authorized to perform this action"
+    }
+  ],
+  "types": [
+    {
+      "name": "RedemptionInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "idea_id",
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "usdg_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "rate_num",
+            "type": "u64"
+          },
+          {
+            "name": "rate_den",
+            "type": "u64"
+          },
+          {
+            "name": "deposit_amount",
+            "type": "u64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RedemptionVault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "idea_id",
+            "type": "string"
+          },
+          {
+            "name": "vault_seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "token_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "usdg_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_usdg_ata",
+            "type": "pubkey"
+          },
+          {
+            "name": "rate_num",
+            "type": "u64"
+          },
+          {
+            "name": "rate_den",
+            "type": "u64"
+          },
+          {
+            "name": "total_usdg_deposited",
+            "type": "u64"
+          },
+          {
+            "name": "total_usdg_claimed",
+            "type": "u64"
+          },
+          {
+            "name": "total_tokens_burned",
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "closed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RemainderReclaimed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserRedeemed",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "tokens_burned",
+            "type": "u64"
+          },
+          {
+            "name": "usdg_out",
+            "type": "u64"
+          },
+          {
+            "name": "total_tokens_burned",
+            "type": "u64"
+          },
+          {
+            "name": "total_usdg_claimed",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

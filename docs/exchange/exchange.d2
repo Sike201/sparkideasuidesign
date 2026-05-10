@@ -1,0 +1,32 @@
+shape: sequence_diagram
+
+# Actors
+fe: BP FE\n(Web)
+be: BP BE\n(CF Workers)
+db: D1\n(Database)
+ex: 3rd Party\nExchange API
+
+# Styling
+be.style: {
+    stroke: orange
+    stroke-dash: 0
+}
+db.style: {
+    stroke: orange
+    stroke-dash: 0
+}
+
+# Sequence
+fe -> be: GET /exchange\n?coin1,coin2
+be <-> db: Load cache from db
+be."Check cache expiration"
+
+"Cache HIT" {
+    be -> fe: Return response
+}
+
+"Cache MISS (not found or expired)" {
+    be <-> ex: Fetch exchange rate from origin server
+    be <-> db: Cache fresh values in db
+    be -> fe: Return response
+}

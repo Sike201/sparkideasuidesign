@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "programs/*"
+]
+resolver = "2"
+
+# Force blake3 1.5.5 which uses constant_time_eq 0.3.1 (edition 2021)
+# blake3 1.8.x uses constant_time_eq 0.4.x which requires Rust 2024 edition
+[patch.crates-io]
+blake3 = { git = "https://github.com/BLAKE3-team/BLAKE3", tag = "1.5.5" }
+
+[profile.release]
+overflow-checks = true
+lto = "fat"
+codegen-units = 1

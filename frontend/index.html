@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY4EH6W1PS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-PY4EH6W1PS');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+
+  <title>JustSpark — Submit Ideas, Vote & Build Together</title>
+  <meta name="description" content="JustSpark is a community-driven platform where you can submit ideas, vote on the best ones, and help bring them to life. Join the movement on Solana." />
+  <link rel="canonical" href="https://justspark.fun/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="JustSpark" />
+  <meta property="og:title" content="JustSpark — Submit Ideas, Vote & Build Together" />
+  <meta property="og:description" content="Community-driven platform to submit ideas, vote on the best ones, and help bring them to life on Solana." />
+  <meta property="og:url" content="https://justspark.fun/" />
+  <meta property="og:image" content="https://justspark.fun/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@JustSparkIdeas" />
+  <meta name="twitter:title" content="JustSpark — Submit Ideas, Vote & Build Together" />
+  <meta name="twitter:description" content="Community-driven platform to submit ideas, vote on the best ones, and help bring them to life on Solana." />
+  <meta name="twitter:image" content="https://justspark.fun/og-image.png" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <!-- Manifest is picked based on the initial pathname so the mini-app
+       ( /mini-app/* ) installs with `start_url=/mini-app/` + `scope=/mini-app/`,
+       while the rest of justspark.fun installs with the global manifest.
+
+       MUST run before React mounts — Chrome Android snapshots the manifest
+       at `beforeinstallprompt` time, which fires almost immediately on page
+       load, well before Helmet can swap the tag. Swapping client-side via
+       react-helmet-async was too late.
+
+       We REMOVE any pre-existing `<link rel="manifest">` first because
+       vite-plugin-pwa auto-injects one at build time pointing at the global
+       `/manifest.webmanifest`. If we just append a second tag, browsers
+       use the FIRST one in document order — so on `/mini-app/*` the global
+       manifest would win, `scope` would be `/` not `/mini-app/`, and
+       Android Chrome would refuse to fire `beforeinstallprompt` for the
+       mini-app (or worse, install the user as the global Spark instead).
+  -->
+  <script>
+    (function () {
+      var path = window.location.pathname || "/";
+      var isMini = path === "/mini-app" || path.indexOf("/mini-app/") === 0;
+      var existing = document.querySelectorAll('link[rel="manifest"]');
+      for (var i = 0; i < existing.length; i++) {
+        existing[i].parentNode.removeChild(existing[i]);
+      }
+      var link = document.createElement("link");
+      link.rel = "manifest";
+      link.href = isMini ? "/manifest-mini.webmanifest" : "/manifest.webmanifest";
+      document.head.appendChild(link);
+    })();
+  </script>
+
+  <script type="module">
+    import { Buffer } from "buffer";
+    window.Buffer = Buffer;
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <div id="simple-modal"></div>
+
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

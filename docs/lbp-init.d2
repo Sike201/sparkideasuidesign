@@ -1,0 +1,23 @@
+shape: sequence_diagram
+
+
+# Actors
+fe: BP FE\n(Web)
+be: BP BE\n(CF Workers)
+db: D1\n(Database)
+sp: Solana Program\n??? Naming ???
+
+fe."Fill in backoffice form\nAdmin API"
+
+fe -> be: "Create project"
+
+be."- Authorize user\n- Validate request"
+# be."Validate request"
+
+be -> db: "Save project to db"
+
+be."Prepare 'initializeLbp' transaction\nSign with admin key"
+
+be -> sp: "Invoke 'initializeLbp' method"
+
+be -> fe: "201 Created"

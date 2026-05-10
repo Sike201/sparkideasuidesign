@@ -1,0 +1,457 @@
+@import "./style/inputSlider.css";
+@import url('https://fonts.googleapis.com/css2?family=Sulphur+Point:wght@300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Geist';
+    src: url("/GeistVF.woff2") format('woff2');
+  }
+  @font-face {
+    font-family: 'GeistMono';
+    src: url("/GeistMonoVF.woff2") format('woff2');
+  }
+  @font-face {
+    font-family: 'VCR OSD Mono';
+    src: url('/VCROSDMono.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Francy';
+    src: url("/Francy.woff2") format('woff2');
+  }
+  @font-face {
+    font-family: 'Satoshi';
+    src: url("/Satoshi-Variable.woff2") format('woff2');
+  }
+  
+}
+
+
+*,
+
+*:before,
+*:after  {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: #060a14;
+  font-synthesis-weight: none
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 24px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-synthesis-weight: none
+}
+:root {
+  --toastify-color-dark: #161B26;
+}
+
+h1, .h1 {
+  font-size: 40px;
+  line-height: 48px;
+}
+h2, .h2 {
+  font-size: 36px;
+  line-height: 44px;
+}
+h3, .h3 {
+  font-size: 32px;
+  line-height: 40px;
+}
+h4 {
+  font-size: 24px;
+  line-height: 32px;
+}
+h5 {
+  font-size: 20px;
+  line-height: 28px;
+}
+img {
+  max-width: none;
+}
+
+mark {
+  background-color: transparent; /* Removes the default yellow background */
+  color: #ACFF73
+}
+button {
+  cursor: pointer !important;
+}
+
+
+:root {
+  /* font-family: "Geist", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  line-height: 1.5;
+  font-weight: 400;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: none;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="checkbox"] {
+  accent-color: #ff6600;
+}
+
+/* Tweet embedment styling */
+.react-tweet-theme._root_98iqw_1 ._article_98iqw_21 p._root_1xq52_1 {
+  font-size: 14px;
+  line-height: 20px;
+}
+.react-tweet-theme._root_98iqw_1 ._follow_nqq4j_74 {
+  font-size: 14px;
+}
+.react-tweet-theme._root_98iqw_1 ._username_nqq4j_69 {
+  font-size: 14px;
+}
+
+.contribution-gradient {
+  background: linear-gradient(90deg, #F4FFEC 0%, #ACFF73 8%, rgba(172, 255, 115, 0.25) 29.5%, rgba(172, 255, 115, 0.00) 100%);
+}
+.explore-goat-pools {
+  border-radius: var(--sm, 12px);
+  background: linear-gradient(180deg, #ACFF73 46.06%, #C5FF9D 100%);
+  box-shadow: 0px -2px 2px 0px rgba(104, 255, 0, 0.75) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.50) inset, 0px 0px 50px 5px rgba(172, 255, 115, 0.15);
+}
+.explore-blitz-pools {
+  border-radius: var(--sm, 12px);
+  background: linear-gradient(180deg, #F6FF73 46.06%, #FAFFB5 100%);
+  box-shadow: 0px -2px 2px 0px rgba(243, 255, 75, 0.75) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.50) inset, 0px 0px 60px 5px rgba(243, 255, 75, 0.15);
+}
+.explore-draft-picks {
+  border-radius: var(--sm, 12px);
+  background: linear-gradient(180deg, #6CE2FF 46.06%, #AFEFFF 100%);
+  box-shadow: 0px -2px 2px 0px #96EAFF inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.50) inset, 0px 0px 50px 5px rgba(150, 234, 255, 0.15);
+}
+.discover-draft-picks:hover {
+  background: linear-gradient(180deg, rgba(108, 226, 255,0.2) 0%, rgba(108, 226, 255, 0.6) 100%);
+  box-shadow: 0px 2px 6px 0px rgba(150, 234, 255, 0.25);
+}
+.discover-blitz-pools:hover {
+  background: linear-gradient(180deg, rgba(246, 255, 115,0.2) 0%, rgba(246, 255, 115, 0.6) 100%);
+  box-shadow: 0px 2px 6px 0px rgba(246, 255, 115, 0.25);
+}
+.discover-goat-pools:hover {
+  background: linear-gradient(180deg, rgba(172, 255, 115,0.2) 0%, rgba(172, 255, 115, 0.6) 100%);
+  box-shadow: 0px 2px 6px 0px rgba(172, 255, 115, 0.25);
+}
+
+/* Conic gradient */
+.animated-conic-gradient { 
+  background: conic-gradient(transparent 270deg, white, transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg) scale(1.4);
+  aspect-ratio: 1;
+  width: 100%;
+}
+
+.tabs-text-shadow {
+  text-shadow: 0px 0px 10px #bcfe8f;
+}
+.tabs-bottom-border {
+  box-shadow: 0 0px 10px 0 #ACFF73
+}
+
+@media (max-width: 390px) {
+  .header-mobile-size-small {
+    font-size: 32px;
+    line-height: 120%;
+  }
+}
+@media (max-width: 325px) {
+  .header-mobile-size-smallest {
+    font-size: 22px;
+    line-height: 120%;
+  }
+}
+
+
+
+
+/* ── Liquid Glass (Spark Landing Pages) ── */
+@layer utilities {
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.015);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 20%,
+      rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+      rgba(255,255,255,0.08) 80%, rgba(255,255,255,0.25) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .liquid-glass-accent::before {
+    background: linear-gradient(180deg,
+      var(--glass-accent, rgba(255,255,255,0.35)) 0%,
+      rgba(255,255,255,0.08) 30%,
+      rgba(255,255,255,0) 50%,
+      rgba(255,255,255,0.05) 70%,
+      var(--glass-accent, rgba(255,255,255,0.2)) 100%);
+  }
+}
+
+/* Tailwind classes */
+.header-shadow {
+  @apply shadow-md shadow-brand-primary
+}
+.data-room {
+  @apply relative flex w-full cursor-pointer items-center justify-between overflow-hidden rounded-lg border border-bd-secondary bg-secondary/50 from-brand-primary/10 via-black/0 via-30% px-4 py-3 transition-colors hover:border-brand-secondary/30 hover:bg-gradient-to-l
+}
+
+/* Date Picker */
+.react-datepicker__calendar-icon {
+  fill: gray;
+  margin-top: 4px;
+}
+
+/* Native date input: make entire field open the calendar on click */
+input[type="date"] {
+  position: relative;
+  cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.react-datepicker__input-container {
+  cursor: pointer !important;
+}
+.react-datepicker__month-container {
+  height: 294px !important;
+}
+
+/* PrizeCard gradient border */
+.prize-card-gradient {
+  position: relative;
+  background: #121621; /* Fond sombre pour l'intérieur de la carte */
+  border-radius: 0.5rem; /* Arrondi des coins */
+}
+
+.prize-card-gradient::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  z-index: -1;
+  border-radius: 0.5rem;
+  background: linear-gradient(to top, var(--gradient-start), var(--gradient-end));
+  padding: 1px; /* Épaisseur du contour */
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Classes spécifiques pour chaque type de carte */
+.prize-card-grand::before {
+  background: linear-gradient(to top, rgba(172, 255, 115, 0.5), rgba(172, 255, 115, 0.15));
+  padding: 1px;
+}
+
+.prize-card-gold::before {
+  background: linear-gradient(to top, rgba(242, 191, 126, 0.5), rgba(242, 191, 126, 0.15));
+  padding: 1px;
+}
+
+.prize-card-silver::before {
+  background: linear-gradient(to top, rgba(225, 231, 239, 0.5), rgba(225, 231, 239, 0.15));
+  padding: 1px;
+}
+
+.prize-card-bronze::before {
+  background: linear-gradient(to top, rgba(211, 129, 96, 0.5), rgba(211, 129, 96, 0.15));
+  padding: 1px;
+}
+
+/* Classes utilitaires */
+.font-vcr {
+  font-family: 'VCR OSD Mono', monospace;
+}
+
+/* Shiny button effect */
+.shiny-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(45deg, #F29F04, #F25C05, #F29F04);
+  background-size: 200% 200%;
+  animation: glow-pulse 2s ease-in-out infinite;
+  border: none;
+  color: #050505;
+  font-weight: 700;
+  font-family: 'GeistMono', monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.shiny-button::after {
+  content: '';
+  position: absolute;
+  top: -50%; right: -50%; bottom: -50%; left: -50%;
+  background: linear-gradient(to bottom,
+    rgba(229,172,142,0), rgba(255,255,255,0.4) 50%, rgba(229,172,142,0));
+  transform: rotateZ(60deg) translate(-5em, 7.5em);
+  animation: sheen 2s infinite linear;
+  pointer-events: none;
+}
+@keyframes glow-pulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes sheen {
+  0% { transform: rotateZ(60deg) translate(-5em, 7.5em); }
+  100% { transform: rotateZ(60deg) translate(5em, -7.5em); }
+}
+
+/* Scanlines CRT overlay */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(255, 255, 255, 0.015) 1px,
+    rgba(255, 255, 255, 0.015) 2px
+  );
+}
+
+/* Cursor blink */
+.cursor-blink::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: #F25C05;
+  margin-left: 2px;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Flicker for live countdown */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  97% { opacity: 0.9; }
+  98% { opacity: 1; }
+}
+.flicker { animation: flicker 3s infinite; }
+
+/* Selection styling for hackathon pages */
+.scanlines ::selection {
+  background: rgba(242,92,5,0.25);
+  color: #F25C05;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Dual range thumb — overlaid range inputs */
+.dual-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Chrome, Safari, Edge — round thumb */
+.dual-range-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #f97316;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
+  margin-top: 3px;
+}
+
+.dual-range-thumb::-webkit-slider-thumb:hover {
+  background: #ea580c;
+  transform: scale(1.15);
+}
+
+/* Firefox — round thumb */
+.dual-range-thumb::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #f97316;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 6px rgba(249, 115, 22, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.dual-range-thumb::-moz-range-thumb:hover {
+  background: #ea580c;
+  transform: scale(1.15);
+}
+
+/* Hide the native track — we render our own */
+.dual-range-thumb::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+
+.dual-range-thumb::-moz-range-track {
+  background: transparent;
+  height: 100%;
+}

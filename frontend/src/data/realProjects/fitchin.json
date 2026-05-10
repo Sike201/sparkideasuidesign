@@ -1,0 +1,155 @@
+{
+  "id": "fitchin",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 0,
+    "fdv": 0,
+    "marketCap": 0,
+    "totalTokensForLiquidityPool": 0,
+    "totalTokensForRewardDistribution": 0,
+    "rewardsDistributionTimeInMonths": 6,
+    "finalSnapshotTimestamp": null,
+    "lbpWalletAddress": null,
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/usdc-logo.png",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "",
+      "ticker": "",
+      "mintAddress": null,
+      "decimals": 0,
+      "fixedTokenPriceInUsd": 0
+    }
+  },
+  "info": {
+    "claimUrl": null,
+    "tweetUrl": null,
+    "tokenContractUrl": null,
+    "poolContractUrl": null,
+
+    "projectType": "draft-pick",
+    "title": "Fitchin",
+    "subtitle": "FITCHIN Universe is the leading gaming platform empowering communities with tokenized clans, competitive tournaments, and shared liquidity rewards. Join the Own-to-Earn revolution!",
+
+    "logoUrl": "https://pub-4b018f06ec944a0693e0f9679cab6f5a.r2.dev/Fitchin/fitchin%20logo.jpg",
+    "thumbnailUrl": "https://pub-4b018f06ec944a0693e0f9679cab6f5a.r2.dev/Fitchin/FITCHIN%20banner.jpeg",
+    "squaredThumbnailUrl": "https://files.borgpad.com/images/fitchin/fitchin-thumbnail-square.png",
+
+    "origin": "web3",
+    "sector": "GameFi",
+    "tokenGenerationEventDate": "March 2025",
+    "targetFdv": "$15M - 25M",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://files.borgpad.com/images/shared/solana-logo.png"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://fitchin.gitbook.io/fitchin-litepaper"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://cdn.prod.website-files.com/614c99cf4f23700c8aa3752a/637db1045802ea0c2b7dbcea_public.png",
+      "lbpType": "Mixte",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "",
+      "fullName": "TBD",
+      "position": "TBD",
+      "socials": [
+        {
+          "url": "https://fitchin.io/",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/FITCHINuniverse",
+          "iconType": "X_TWITTER",
+          "label": "X (ex-Twitter)"
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "iconType": "WEB",
+        "url": "https://fitchin.io/",
+        "label": ""
+      },
+      {
+        "iconType": "DISCORD",
+        "url": "https://discord.com/invite/fitchin",
+        "label": ""
+      },
+      {
+        "iconType": "X_TWITTER",
+        "url": "https://x.com/FITCHINuniverse",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": null
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": null
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": null
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": null
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier30",
+        "label": "BORGers Club",
+        "description": "",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "BORG",
+            "tokenAmount": "1000",
+            "tokenMintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z"
+          }
+        ],
+        "benefits": {
+          "startDate": "2025-12-31T23:59:59Z",
+          "minInvestment": "100",
+          "maxInvestment": "2500"
+        }
+      },
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "description": "",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-12-31T23:59:59Z",
+          "minInvestment": "10",
+          "maxInvestment": "2500"
+        }
+      }
+    ]
+  }
+}

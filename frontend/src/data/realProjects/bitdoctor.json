@@ -1,0 +1,157 @@
+{
+  "id": "bitdoctor",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 50000,
+    "fdv": 5000000,
+    "marketCap": 0,
+    "totalTokensForLiquidityPool": 0,
+    "totalTokensForRewardDistribution": 10000000,
+    "rewardsDistributionTimeInMonths": 1,
+    "finalSnapshotTimestamp": "2025-04-03T14:00:00.000Z",
+    "lbpWalletAddress": "CTbwxhuo3Y4X65M5XjfD9LzTjWqU3D5EC65e6mZtwu6w",
+    "raisedTokenData": {
+      "iconUrl": "https://files.borgpad.com/usdc-logo.png",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://files.borgpad.com/images/bitdoctor/bitdoctor-logo.png",
+      "ticker": "AIDD",
+      "mintAddress": null,
+      "decimals": 0,
+      "fixedTokenPriceInUsd": 0.005
+    },
+    "nftConfig": {
+      "name": "BitDoctor Liquidity Provider",
+      "symbol": "bpBITDOCTOR",
+      "description": "You enabled BitDoctor to launch via BorgPad. This NFT is your proof, hold it to claim your rewards.",
+      "imageUrl": "https://files.borgpad.com/bitdoctor/nft-metadata/image.png",
+      "collection": "4r3NFTQvwu8DMQDeyv5BjsNEuZj1gdoeWP1wjhxHU5qX"
+    }
+  },
+  "info": {
+    "claimUrl": null,
+    "tweetUrl": null,
+    "tokenContractUrl": null,
+    "poolContractUrl": null,
+    "projectType": "blitz",
+    "title": "BitDoctor",
+    "subtitle": "AI Doctor that streamlines health data, clinical trials, medical advice and diagnostic services with AI & DePIN",
+    "logoUrl": "https://files.borgpad.com/images/bitdoctor/bitdoctor-logo.png",
+    "thumbnailUrl": "https://files.borgpad.com/images/bitdoctor/bitdoctor-thumbnail.png",
+    "origin": "web3",
+    "sector": "AI / DeSci",
+    "tokenGenerationEventDate": "April 3rd, 2025",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://files.borgpad.com/images/zkagi/solana-small.jpg"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://docs.bitdoctor.ai/"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://files.borgpad.com/images/shared/raydium-logo-small.png",
+      "lbpType": "Mixed",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "https://files.borgpad.com/images/shared/borgpad-logo-green-bg.png",
+      "fullName": "SwissBorg",
+      "position": "Alpha Deal",
+      "socials": [
+        {
+          "url": "https://swissborg.com",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": ""
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://bitdoctor.ai/",
+        "iconType": "WEB",
+        "label": "Web"
+      },
+      {
+        "url": "https://twitter.com/bitdoctorai",
+        "iconType": "X_TWITTER",
+        "label": "X"
+      },
+      {
+        "url": "https://t.me/BitDocAI",
+        "iconType": "TELEGRAM",
+        "label": "Telegram"
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "date": "2025-03-10T10:00:00.000Z",
+        "label": "Registration Opens"
+      },
+      {
+        "id": "SALE_OPENS",
+        "date": "2025-04-03T14:00:00.000Z",
+        "label": "Sale Opens"
+      },
+      {
+        "id": "SALE_CLOSES",
+        "date": "2025-04-03T18:00:00.000Z",
+        "label": "Sale Closes"
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "date": "2025-04-03T19:00:00.000Z",
+        "label": "Reward Distribution"
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "date": "2025-04-03T19:00:00.000Z",
+        "label": "Distribution Over"
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier10",
+        "label": "Borgers Club",
+        "questsOperator": "AND",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenMintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z",
+            "tokenName": "BORG",
+            "tokenAmount": "1000"
+          }
+        ],
+        "benefits": {
+          "startDate": "2025-04-03T14:00:00.000Z",
+          "minInvestment": "0",
+          "maxInvestment": "2500"
+        }
+      },
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "questsOperator": "AND",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-04-03T14:15:00.000Z",
+          "minInvestment": "0",
+          "maxInvestment": "1500"
+        }
+      }
+    ]
+  }
+}

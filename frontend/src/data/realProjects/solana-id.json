@@ -1,0 +1,249 @@
+{
+  "id": "solana-id",
+  "config": {
+    "cluster": "mainnet",
+
+    "lpPositionToBeBurned": true,
+
+    "raiseTargetInUsd": 250000,
+    "fdv": 20000000,
+    "marketCap": 2000000,
+
+    "totalTokensForLiquidityPool": 12500000,
+    "totalTokensForRewardDistribution": 12500000,
+
+    "rewardsDistributionTimeInMonths": 6,
+
+    "finalSnapshotTimestamp": "2024-12-19T17:00:00Z",
+
+    "lbpWalletAddress": "EzVMRab2dvm7mVHEwQ5riQKMHR1PaNvB9tCm1x2nK2Rn",
+    "raisedTokenData": {
+      "iconUrl": "https://s2.coinmarketcap.com/static/img/coins/200x200/2499.png",
+      "ticker": "BORG",
+
+      "mintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z",
+      "decimals": 9,
+      "fixedTokenPriceInUsd": 0.362331,
+      "coinGeckoName": "swissborg"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://pbs.twimg.com/profile_images/1790569613694222336/ohYGOED1_400x400.jpg",
+      "ticker": "SOLID",
+
+      "mintAddress": "SoLiDMWBct5TurG1LNcocemBK7QmTn4P33GSrRrcd2n",
+      "decimals": 9,
+      "fixedTokenPriceInUsd": 0.02
+    }
+  },
+  "info": {
+    "claimUrl": "https://app.streamflow.finance/airdrops",
+    "tweetUrl": "https://x.com/borgpadhq/status/1869813497384874467?s=46",
+    "tokenContractUrl": "https://jup.ag/swap/SOL-SoLiDMWBct5TurG1LNcocemBK7QmTn4P33GSrRrcd2n",
+    "poolContractUrl": "https://raydium.io/liquidity/increase/?mode=add&pool_id=4VLWQsgWF5WcC7pG9huCT3domqzhYVonY5GvcbHduCWv",
+
+    "projectType": "goat",
+    "title": "Solana ID",
+    "subtitle": "Solana's Digital Identity Layer",
+    "logoUrl": "https://imgcdn.stablediffusionweb.com/2024/4/19/5acb9020-70dd-42c5-afca-3fe165e87d2c.jpg",
+    "thumbnailUrl": "https://pub-4b018f06ec944a0693e0f9679cab6f5a.r2.dev/images/solana-id/solanaIdThumbnail-min.png",
+    "origin": "The Trenches 🪖",
+    "sector": "Digital Identity",
+    "tokenGenerationEventDate": "19th December, 2024",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://i.redd.it/yfsqpy0126r81.jpg"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "/images/puffer-finance/avatar2.png",
+      "url": "https://www.solana.id/solid"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://cdn.prod.website-files.com/614c99cf4f23700c8aa3752a/637db1045802ea0c2b7dbcea_public.png",
+      "lbpType": "Concentrated Liquidity",
+      "lockingPeriod": "6 months"
+    },
+    "curator": {
+      "avatarUrl": "https://s2.coinmarketcap.com/static/img/coins/200x200/2499.png",
+      "fullName": "SwissBorg",
+      "position": "Alpha Deal",
+      "socials": [
+        {
+          "url": "https://swissborg.com/alpha/solana-id",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": "X (ex-Twitter)"
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://www.solana.id/",
+        "__comment": "Possible values: \"MEDIUM\" | \"LINKED_IN\" | \"WEB\" | \"X_TWITTER\"",
+        "iconType": "WEB",
+        "label": ""
+      },
+      {
+        "url": "https://x.com/solanaidentity",
+        "iconType": "X_TWITTER",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": "2024-11-05T13:00:00Z"
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": "2024-12-19T17:00:00Z"
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": "2024-12-19T18:01:00Z"
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": "2024-12-19T19:25:00Z"
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": "2025-05-20T11:00:00Z"
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier10",
+        "label": "Priority Pass Holders",
+        "description": "First to access sale at 5 PM UTC. Max Investment $2K",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "Priority Pass NFT",
+            "tokenAmount": "1",
+            "tokenMintAddress": "4jYzKMx7Qjq98rUk4FxzAEPMhrSdABztazqmGeKnhvg1"
+          }
+        ],
+        "benefits": {
+          "startDate": "2024-12-19T17:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "2000"
+        }
+      },
+      {
+        "id": "tier20",
+        "label": "Borgers Club",
+        "description": "Hold $BORG & qualify to invest at 6 PM UTC. Max Investment $2K",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "BORG",
+            "tokenAmount": "1000",
+            "tokenMintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z"
+          }
+        ],
+        "benefits": {
+          "startDate": "2024-12-19T18:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "2000"
+        }
+      },
+      {
+        "id": "tier30",
+        "label": "Solidian Origins: Drip Collectors",
+        "description": "Access to sale at 7 PM UTC. Max Investment $1.5K",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "Solana ID x Drip Collectible",
+            "tokenAmount": "1",
+            "tokenMintAddress": "BD5EpsrZmPGK8DMMhu1DYAzKXEp5nMrTEyhSsWrjWKP1"
+          }
+        ],
+        "benefits": {
+          "startDate": "2024-12-19T19:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier40",
+        "label": "SOLID Community Partners",
+        "description": "Access to sale at 7 PM UTC. Max Investment $1.5K",
+        "questsOperator": "OR",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "SMB Gen2",
+            "tokenAmount": "1",
+            "tokenMintAddress": "SMBtHCCC6RYRutFEPb4gZqeBLUZbMNhRKaMKZZLHi7W"
+          },
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "SMB Gen3",
+            "tokenAmount": "1",
+            "tokenMintAddress": "8Rt3Ayqth4DAiPnW9MDFi63TiQJHmohfTWLMQFHi4KZH"
+          },
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "Sensei Panda",
+            "tokenAmount": "1",
+            "tokenMintAddress": "GMoemLuVAksjvGph8dmujuqijWsodt7nJsvwoMph3uzj"
+          },
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "FlashTrade Beast",
+            "tokenAmount": "1",
+            "tokenMintAddress": "H4EQ8pcE7PQSQGG1WYW4hAA1nizU6ULYipHZcYk9b64u"
+          },
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "Herman",
+            "tokenAmount": "1",
+            "tokenMintAddress": "3UwNGy8JAaCp3xCV26EwBqfEvXo8cdHRjjMGCCc7qDGB"
+          }
+        ],
+        "benefits": {
+          "startDate": "2024-12-19T19:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier45",
+        "label": "Solana SuperTeams Member",
+        "description": "Access to sale at 7 PM UTC. Max Investment $1.5K",
+        "quests": [
+          {
+            "type": "WHITELIST"
+          }
+        ],
+        "benefits": {
+          "startDate": "2024-12-19T19:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "description": "Access to sale at 8 PM UTC. Max Investment $1K",
+        "quests": [],
+        "benefits": {
+          "startDate": "2024-12-19T20:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "1000"
+        }
+      }
+    ]
+  }
+}

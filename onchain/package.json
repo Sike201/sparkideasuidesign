@@ -1,0 +1,36 @@
+{
+  "name": "spark-idea-vault-onchain",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
+    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check",
+    "test": "anchor test",
+    "test:devnet": "anchor test --provider.cluster devnet --skip-deploy",
+    "test:local": "anchor test --skip-local-validator",
+    "build": "anchor build",
+    "deploy:devnet": "anchor deploy",
+    "deploy:mainnet": "anchor deploy --provider.cluster mainnet",
+    "keys:sync": "anchor keys sync",
+    "clean": "rm -rf target/debug target/release && cargo clean"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4",
+    "bn.js": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.5",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "chai": "^4.4.1",
+    "mocha": "^10.2.0",
+    "prettier": "^3.2.4",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

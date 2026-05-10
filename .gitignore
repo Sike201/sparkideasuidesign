@@ -1,0 +1,48 @@
+# IDEs
+.idea
+.vscode
+
+# OS
+.DS_Store
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+build
+target
+.anchor
+
+# Cloudflare wrangler
+.wrangler
+wrangler.toml
+wrangler_*.toml
+
+# Environment / secrets
+.env
+.env.local
+.envtest
+.dev.vars
+*.local.properties
+
+# App signing keys — never commit
+*.keystore
+*.jks
+*.p8
+*.p12
+*.pem
+
+# Solana keypairs
+*.id.json
+**/keys/*.json
+
+# Data exports / dumps
+backup_*.sql
+*.csv
+mint_transactions_*.csv
+custodial_wallets*.json
+
+# Misc
+tmp/
+.prettierignore

@@ -1,0 +1,165 @@
+{
+  "id": "moemate",
+  "config": {
+    "cluster": "mainnet",
+    "lpPositionToBeBurned": true,
+    "raiseTargetInUsd": 375000,
+    "fdv": 35000000,
+    "marketCap": 2925015,
+    "totalTokensForLiquidityPool": 208928571,
+    "totalTokensForRewardDistribution": 390000000,
+    "rewardsDistributionTimeInMonths": 6,
+    "finalSnapshotTimestamp": "2025-01-14T15:55:00Z",
+    "lbpWalletAddress": "FTYagkf65eq7bxn4SzRpzQwuQT6Sr6fR3sBcgwe7EdGA",
+    "raisedTokenData": {
+      "iconUrl": "https://cryptologos.cc/logos/usd-coin-usdc-logo.svg?v=040",
+      "ticker": "USDC",
+      "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 1,
+      "coinGeckoName": "usd"
+    },
+    "launchedTokenData": {
+      "iconUrl": "https://play-lh.googleusercontent.com/GRio1Gpgu9_j0iDoLvIapmRvBCeDMTL6f2LFFcuSoqpfGfo5MZvVtPyxSI1epUOlbT1O",
+      "ticker": "MATES",
+      "mintAddress": "MAtesZXcU38mgPuteRFo9ApCauYRRuwn3xf1cs5y7ZX",
+      "decimals": 6,
+      "fixedTokenPriceInUsd": 0.00179
+    }
+  },
+  "info": {
+    "claimUrl": "https://app.streamflow.finance/airdrops/solana/mainnet/3XTJwQUoaSt15jxKALeyVH7aKuFp3vFBbh6KcjzNX9qv",
+    "tweetUrl": "https://x.com/BorgPadHQ/status/1879197635216601331",
+    "tokenContractUrl": "https://jup.ag/swap/SOL-MAtesZXcU38mgPuteRFo9ApCauYRRuwn3xf1cs5y7ZX",
+    "poolContractUrl": "https://raydium.io/liquidity/increase/?mode=add&pool_id=53zeGszwfgY2d6ExMywwdBHMckqTzbLeztKWD1GbAEKV",
+
+    "projectType": "goat",
+    "title": "Moemate",
+    "subtitle": "Solana's Battle-tested AI Agent Platform",
+    "logoUrl": "https://play-lh.googleusercontent.com/GRio1Gpgu9_j0iDoLvIapmRvBCeDMTL6f2LFFcuSoqpfGfo5MZvVtPyxSI1epUOlbT1O",
+    "thumbnailUrl": "https://files.borgpad.com/images/moemate/moemate-cover.png",
+    "origin": "The Timeline",
+    "sector": "AI Agents",
+    "tokenGenerationEventDate": "14th January, 2025",
+    "chain": {
+      "name": "Solana",
+      "iconUrl": "https://i.redd.it/yfsqpy0126r81.jpg"
+    },
+    "dataRoom": {
+      "backgroundImgUrl": "",
+      "url": "https://borgpad-data-room.notion.site/moemate"
+    },
+    "liquidityPool": {
+      "name": "Raydium",
+      "iconUrl": "https://cdn.prod.website-files.com/614c99cf4f23700c8aa3752a/637db1045802ea0c2b7dbcea_public.png",
+      "lbpType": "Mixte",
+      "lockingPeriod": "∞"
+    },
+    "curator": {
+      "avatarUrl": "https://s2.coinmarketcap.com/static/img/coins/200x200/2499.png",
+      "fullName": "SwissBorg",
+      "position": "Alpha Deal",
+      "socials": [
+        {
+          "url": "https://swissborg.com/alpha/moemate",
+          "iconType": "WEB",
+          "label": "Web"
+        },
+        {
+          "url": "https://x.com/swissborg",
+          "iconType": "X_TWITTER",
+          "label": "X (ex-Twitter)"
+        }
+      ]
+    },
+    "projectLinks": [
+      {
+        "url": "https://www.moemate.io/",
+        "__comment": "Possible values: \"MEDIUM\" | \"LINKED_IN\" | \"WEB\" | \"X_TWITTER\"",
+        "iconType": "WEB",
+        "label": ""
+      },
+      {
+        "url": "https://x.com/MoemateAI",
+        "iconType": "X_TWITTER",
+        "label": ""
+      }
+    ],
+    "timeline": [
+      {
+        "id": "REGISTRATION_OPENS",
+        "label": "Registration Opens",
+        "date": "2024-11-24T23:00:00Z"
+      },
+      {
+        "id": "SALE_OPENS",
+        "label": "Sale Opens",
+        "date": "2025-01-14T16:00:00Z"
+      },
+      {
+        "id": "SALE_CLOSES",
+        "label": "Sale Closes",
+        "date": "2025-01-14T16:10:00Z"
+      },
+      {
+        "id": "REWARD_DISTRIBUTION",
+        "label": "Reward Distribution",
+        "date": "2025-01-14T18:10:00Z"
+      },
+      {
+        "id": "DISTRIBUTION_OVER",
+        "label": "Distribution Over",
+        "date": "2025-06-15T16:00:00Z"
+      }
+    ],
+    "tiers": [
+      {
+        "id": "tier10",
+        "label": "$MOE's 5 Digit Club.",
+        "description": "Access to sale at 5 PM CET. Maximum Investment: $1.5K",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "MOE",
+            "tokenAmount": "10000",
+            "tokenMintAddress": "8xzoj8mVmXtBQm6d2euJGFPvQ2QsTV5R8cdexi2qpump"
+          }
+        ],
+        "benefits": {
+          "startDate": "2025-01-14T16:00:00Z",
+          "minInvestment": "100",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier30",
+        "label": "BORGers Club",
+        "description": "Access to sale at 5:30 PM CET. Max Investment $1.5K",
+        "quests": [
+          {
+            "type": "HOLD_TOKEN",
+            "tokenName": "BORG",
+            "tokenAmount": "1000",
+            "tokenMintAddress": "3dQTr7ror2QPKQ3GbBCokJUmjErGg8kTJzdnYjNfvi3Z"
+          }
+        ],
+        "benefits": {
+          "startDate": "2025-01-14T16:30:00Z",
+          "minInvestment": "100",
+          "maxInvestment": "1500"
+        }
+      },
+      {
+        "id": "tier99",
+        "label": "Public Sale",
+        "description": "Access to sale at 6 PM CET. Max Investment $250",
+        "quests": [],
+        "benefits": {
+          "startDate": "2025-01-14T17:00:00Z",
+          "minInvestment": "10",
+          "maxInvestment": "250"
+        }
+      }
+    ]
+  }
+}

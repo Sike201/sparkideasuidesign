@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "fun.justspark.twa",
+        "sha256_cert_fingerprints": ["D2:23:19:0A:AF:8D:59:79:D8:59:8E:45:66:9A:2E:41:EF:3C:9C:6D:E5:0B:9E:B7:0E:2A:FC:C0:99:37:19:B9"]
+      }
+    }]
