@@ -75,10 +75,7 @@ function PartnerMarquee() {
           maskRepeat: "no-repeat",
         }}
       >
-        <div
-          className="flex w-max items-center gap-14 md:gap-20"
-          style={{ animation: "marquee 48s linear infinite" }}
-        >
+        <div className="flex w-max animate-marquee items-center gap-14 md:gap-20 will-change-transform">
           {loop.map((p, i) => (
             <img
               key={`${p.alt}-${i}`}

@@ -286,7 +286,7 @@ export default {
         "looped-video": "looped-video 7.04s ease-in-out infinite",
         "slide-exit-left": "slide-exit-left 0.5s ease-in-out forwards",
         "slide-entrance-left": "slide-entrance-left 0.5s ease-in-out forwards",
-        marquee: "marquee 38s linear infinite",
+        marquee: "marquee 48s linear infinite",
       },
     },
   },
