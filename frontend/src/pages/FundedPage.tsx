@@ -1,40 +1,158 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { DollarSign, Timer, Lock, Trophy, Skull, Loader2 } from "lucide-react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Loader2, ArrowUpRight } from "lucide-react";
 import { useIdeasAuth } from "@/hooks/useIdeasAuth";
 import { useIdeasData } from "@/hooks/useIdeasData";
 import IdeasLayout from "@/components/Ideas/IdeasLayout";
-import { categoryColors } from "@/components/Ideas";
+import Aurora from "@/components/Aurora";
 import { SEO } from "@/components/SEO";
 import type { Idea } from "@/components/Ideas/types";
 import { viewVault, type RedemptionCluster, type VaultState } from "@/services/redemptionVaultSdk";
+import {
+  MOCK_FUNDED_ACTIVE,
+  MOCK_FUNDED_GRAVEYARD,
+  mockProgressPct,
+  type MockFundedProject,
+} from "@/data/mockFundedPortfolio";
 
-// The redemption vault program lives on devnet today — mirrors RedemptionSection.
 const CLUSTER: RedemptionCluster =
   (import.meta.env.VITE_SOLANA_NETWORK as RedemptionCluster) || "devnet";
+
+const AURORA_STOPS = ["#431407", "#ea580c", "#fdba74"];
+const easeOut = [0.22, 1, 0.36, 1] as const;
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.48, ease: easeOut } },
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06, delayChildren: 0.08 } },
+};
+
+function fmtMoney(n: number) {
+  return `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+}
+
+function MockPortfolioCard({ project, index }: { project: MockFundedProject; index: number }) {
+  const pct = mockProgressPct(project);
+  const isG = project.status === "graveyard";
+  return (
+    <motion.article variants={fadeUp} className="h-full">
+      <Link
+        to={`/funded/mock/${project.slug}`}
+        className={`group flex h-full flex-col overflow-hidden border bg-black/60 backdrop-blur-[2px] transition-colors duration-300 ${
+          isG
+            ? "border-white/[0.05] hover:border-white/[0.12]"
+            : "border-white/[0.08] hover:border-orange-500/30"
+        }`}
+      >
+        <div className="relative block overflow-hidden bg-neutral-950">
+          <motion.img
+            src={project.image}
+            alt=""
+            className="aspect-[5/4] w-full object-cover sm:aspect-[16/11]"
+            whileHover={{ scale: 1.04 }}
+            transition={{ duration: 0.55, ease: easeOut }}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
+          <div className="absolute left-3 top-3 flex items-center gap-2 sm:left-4 sm:top-4">
+            <span
+              className={`rounded border px-2 py-0.5 font-geist-mono text-[9px] uppercase tracking-[0.18em] ${
+                isG ? "border-white/10 bg-black/70 text-neutral-400" : "border-orange-500/35 bg-black/70 text-orange-200/95"
+              }`}
+            >
+              {isG ? "Archive" : "Funded"}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-col border-t border-white/[0.06] p-4 sm:p-5">
+          <p className="font-geist-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600">{project.category}</p>
+          <h3 className="mt-1.5 font-satoshi text-[17px] font-semibold leading-snug tracking-tight text-white transition-colors group-hover:text-orange-50">
+            {project.title}
+          </h3>
+          <p className="mt-2 line-clamp-2 flex-1 font-geist text-[12px] leading-relaxed text-neutral-500">{project.tagline}</p>
+
+          <div className="mt-4">
+            <div className="mb-1.5 flex items-end justify-between gap-2">
+              <span className="font-geist-mono text-[11px] tabular-nums text-orange-300/95">{pct}%</span>
+              <span className="text-right font-geist-mono text-[10px] text-neutral-600">
+                {fmtMoney(project.raisedUsd)} / {fmtMoney(project.goalUsd)}
+              </span>
+            </div>
+            <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-orange-600 to-orange-400"
+                initial={{ width: 0 }}
+                whileInView={{ width: `${Math.min(100, pct)}%` }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.9, delay: 0.12 + index * 0.04, ease: easeOut }}
+              />
+            </div>
+          </div>
+
+          <span className="mt-4 inline-flex items-center gap-1.5 font-geist text-[11px] font-medium text-neutral-500 transition-colors group-hover:text-orange-400">
+            Investment memo
+            <ArrowUpRight className="h-3.5 w-3.5 opacity-70" strokeWidth={1.5} />
+          </span>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}
+
+function LiveFundedRow({
+  idea,
+  onClick,
+  extra,
+}: {
+  idea: Idea & { progress: number };
+  onClick: () => void;
+  extra?: ReactNode;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.35 }}
+      className="flex w-full flex-col gap-2 border-b border-white/[0.06] py-5 text-left transition-colors hover:bg-white/[0.03] sm:flex-row sm:items-center sm:justify-between"
+    >
+      <div className="min-w-0 flex-1">
+        <p className="font-satoshi text-[15px] font-semibold tracking-tight text-white">{idea.title}</p>
+        <p className="mt-1 font-geist text-[11px] text-neutral-500">{idea.category}</p>
+      </div>
+      <div className="flex shrink-0 flex-col items-start gap-1 sm:items-end">
+        <p className="font-geist-mono text-[12px] text-orange-300/90">
+          {`${Math.round(idea.progress)}% · ${fmtMoney(idea.raisedAmount || 0)} / ${fmtMoney(idea.estimatedPrice || 0)}`}
+        </p>
+        {extra}
+      </div>
+    </motion.button>
+  );
+}
 
 export default function FundedPage() {
   const auth = useIdeasAuth();
   const ideasData = useIdeasData(auth);
   const navigate = useNavigate();
 
-  // All funded ideas (token launched). Graveyard is a subset of these — funded
-  // ideas that have a redemption vault initialized on-chain. We only render
-  // cards where `hasVault` is true in the Graveyard grid below.
   const fundedIdeasAll = useMemo(
     () =>
       ideasData.ideas
-        .filter(i => i.tokenAddress)
-        .map(i => ({
+        .filter((i) => i.tokenAddress)
+        .map((i) => ({
           ...i,
           progress: ((i.raisedAmount || 0) / (i.estimatedPrice || 1)) * 100,
         })),
     [ideasData.ideas],
   );
 
-  // Per-funded-idea vault state. `undefined` = not checked yet, `null` = no
-  // vault, otherwise the full VaultState so the graveyard card can show the
-  // refund figures (totalUsdgDeposited, decimals, etc.).
   const [vaultStates, setVaultStates] = useState<Record<string, VaultState | null>>({});
   const [isCheckingVaults, setIsCheckingVaults] = useState(false);
 
@@ -43,8 +161,7 @@ export default function FundedPage() {
       setIsCheckingVaults(false);
       return;
     }
-    // Only check ideas we haven't resolved yet, so re-renders don't re-fetch.
-    const toCheck = fundedIdeasAll.filter(i => vaultStates[i.id] === undefined);
+    const toCheck = fundedIdeasAll.filter((i) => vaultStates[i.id] === undefined);
     if (toCheck.length === 0) {
       setIsCheckingVaults(false);
       return;
@@ -63,7 +180,7 @@ export default function FundedPage() {
         }),
       );
       if (cancelled) return;
-      setVaultStates(prev => {
+      setVaultStates((prev) => {
         const next = { ...prev };
         for (const [id, v] of results) next[id] = v;
         return next;
@@ -75,18 +192,9 @@ export default function FundedPage() {
     };
   }, [fundedIdeasAll, vaultStates]);
 
-  // Graveyard = funded ideas with a redemption vault initialized on-chain.
-  // Holders can burn their Ideacoin against the vault (RedemptionSection on
-  // the detail page).
-  const graveyardIdeas = fundedIdeasAll.filter(i => vaultStates[i.id] != null);
-
-  // Funded Ideas shown at top = launched tokens that AREN'T in the graveyard.
-  // An idea in the graveyard has been wound down; keeping it in the Funded
-  // grid would overstate the "alive" count and double-list it on the page.
-  const graveyardIds = new Set(graveyardIdeas.map(i => i.id));
-  const fundedIdeas = fundedIdeasAll.filter(
-    i => i.status !== "refunded" && !graveyardIds.has(i.id),
-  );
+  const graveyardIdeas = fundedIdeasAll.filter((i) => vaultStates[i.id] != null);
+  const graveyardIds = new Set(graveyardIdeas.map((i) => i.id));
+  const fundedIdeas = fundedIdeasAll.filter((i) => i.status !== "refunded" && !graveyardIds.has(i.id));
 
   const handleIdeaClick = (idea: Idea) => {
     ideasData.setSelectedIdea(idea);
@@ -95,251 +203,179 @@ export default function FundedPage() {
 
   const isLoading = ideasData.isLoadingIdeas;
 
+  const committedDisplay = useMemo(() => {
+    const sum = MOCK_FUNDED_ACTIVE.reduce((s, p) => s + p.raisedUsd, 0);
+    if (sum >= 1e6) return `$${(sum / 1e6).toFixed(1)}M`;
+    return fmtMoney(sum);
+  }, []);
+
   return (
     <IdeasLayout auth={auth} ideasData={ideasData}>
       <SEO
-        title="Funded Ideas"
-        description="Explore ideas that have been funded by the community and are being built right now."
+        title="Funded"
+        description="Spark portfolio — active launches, live registry, and archived programs."
         path="/funded"
       />
-      <div className="animate-fade-in">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 p-1.5">
-            <Trophy className="w-5 h-5 text-amber-400" />
-          </div>
-          <h2 className="text-lg font-semibold text-white font-satoshi">Funded Ideas</h2>
-        </div>
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="rounded-2xl bg-white/[0.02] border border-white/[0.04] overflow-hidden animate-pulse"
-              >
-                <div className="h-[2px] bg-gradient-to-r from-amber-500/20 via-amber-400/20 to-transparent" />
-                <div className="h-64 bg-neutral-900/40" />
-                <div className="-mt-8 relative z-10 p-5 space-y-3">
-                  <div className="h-4 w-2/3 rounded bg-white/5" />
-                  <div className="h-1.5 w-full rounded-full bg-white/5" />
-                  <div className="h-3 w-1/2 rounded bg-white/5" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : fundedIdeas.length === 0 ? (
-          <div className="text-center py-16 text-neutral-500 font-satoshi">
-            <Trophy className="w-10 h-10 mx-auto mb-3 opacity-50" />
-            <p className="text-sm">No funded ideas yet</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {fundedIdeas.map((idea) => {
-              const colors = categoryColors[idea.category] || categoryColors["AI x Crypto"];
-              return (
-                <div
-                  key={idea.id}
-                  onClick={() => handleIdeaClick(idea)}
-                  className="relative rounded-2xl bg-white/[0.02] border border-amber-500/15 hover:border-amber-500/40 transition-all cursor-pointer group overflow-hidden"
-                >
-                  {/* Accent Line */}
-                  <div className="h-[2px] bg-gradient-to-r from-amber-500/40 via-amber-400/40 to-transparent" />
-                  {/* Funded Badge */}
-                  <div className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/25 backdrop-blur-sm text-[10px] font-semibold text-amber-300">
-                    Funded ✓
-                  </div>
-                  {/* Image */}
-                  <div className="relative h-64 bg-neutral-900/30">
-                    {idea.generatedImageUrl ? (
-                      <img
-                        src={idea.generatedImageUrl}
-                        alt={idea.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Trophy className="w-8 h-8 text-amber-500/20" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent" />
-                  </div>
-                  {/* Content */}
-                  <div className="-mt-8 relative z-10 p-5">
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h4 className="text-sm font-medium text-white font-satoshi line-clamp-1 group-hover:text-amber-100 transition-colors">
-                        {idea.title}
-                      </h4>
-                      <span className={`shrink-0 px-1.5 py-0.5 rounded text-[8px] font-medium ${colors.bg} ${colors.text} ${colors.border} border`}>
-                        {idea.category}
-                      </span>
-                    </div>
-                    <div className="h-1.5 bg-white/[0.04] rounded-full overflow-hidden mb-2">
-                      <div
-                        className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500"
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-[10px] font-geist">
-                      <span className="text-amber-400 font-black font-satoshi">{idea.progress.toFixed(0)}%</span>
-                      <span className="text-neutral-500 flex items-center gap-0.5">
-                        <DollarSign className="w-2.5 h-2.5" />
-                        <span className="font-bold font-satoshi">{(idea.raisedAmount || 0).toLocaleString()}</span> / <span className="font-bold font-satoshi">{(idea.estimatedPrice || 0).toLocaleString()}</span>
-                      </span>
-                    </div>
-                    {/* Countdown */}
-                    {(() => {
-                      if (!idea.capReachedAt) return null;
-                      const capDeadline = new Date(new Date(idea.capReachedAt).getTime() + 24 * 60 * 60 * 1000);
-                      const timeLeft = Math.max(0, capDeadline.getTime() - ideasData.now.getTime());
-                      if (timeLeft === 0) {
-                        return (
-                          <div className="mt-2 flex items-center gap-1 text-[10px] text-red-400">
-                            <Lock className="w-3 h-3" />
-                            <span className="font-medium">Investment Round Closed</span>
-                          </div>
-                        );
-                      }
-                      const d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                      const h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                      const m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                      const s = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                      const pad = (n: number) => n.toString().padStart(2, "0");
-                      return (
-                        <div className="mt-2 flex items-center gap-1.5 text-[10px]">
-                          <Timer className="w-3 h-3 text-yellow-400" />
-                          <span className="text-yellow-400 font-medium">Closes in</span>
-                          <span className="text-yellow-300 font-mono font-bold">{pad(d)}:{pad(h)}:{pad(m)}:{pad(s)}</span>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
 
-        {/* ── Graveyard ── */}
-        <div className="mt-12">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="rounded-xl bg-neutral-500/10 border border-neutral-500/20 p-1.5">
-              <Skull className="w-5 h-5 text-neutral-400" />
-            </div>
-            <h2 className="text-lg font-semibold text-white font-satoshi">Graveyard</h2>
-            <span className="text-[11px] text-neutral-500 font-satoshi hidden sm:inline">
-              — funded ideas with a redemption vault · burn your Ideacoin for USDG
-            </span>
+      <div className="relative -mx-6 min-h-[calc(100vh-8rem)] md:-mx-10">
+        <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.42]">
+          <div className="h-full w-full origin-center -scale-y-100">
+            <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
           </div>
-          {isLoading || isCheckingVaults ? (
-            <div className="flex items-center justify-center py-10 text-neutral-500">
-              <Loader2 className="w-5 h-5 animate-spin" />
+        </div>
+
+        <div className="relative z-10 px-6 md:px-10">
+          <motion.header
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: easeOut }}
+            className="mb-10 border-b border-white/[0.07] pb-10 md:mb-14 md:pb-12"
+          >
+            <p className="font-geist-mono text-[11px] uppercase tracking-[0.32em] text-orange-400/90">Portfolio</p>
+            <h1 className="mt-3 font-satoshi text-[clamp(1.75rem,4vw,2.35rem)] font-semibold tracking-tight text-white">
+              Funded
+            </h1>
+            <p className="mt-4 max-w-2xl font-geist text-[13px] leading-relaxed text-neutral-500">
+              Mandates that cleared Spark raise mechanics — structured like an institutional sleeve, readable like a
+              venture portfolio. Figures below include curated design previews alongside the live registry.
+            </p>
+            <dl className="mt-8 grid max-w-lg grid-cols-2 gap-6 border-t border-white/[0.06] pt-8 font-geist">
+              <div>
+                <dt className="text-[10px] uppercase tracking-[0.22em] text-neutral-600">Preview sleeve</dt>
+                <dd className="mt-1 font-geist-mono text-lg tabular-nums text-white">{committedDisplay}</dd>
+                <dd className="mt-0.5 text-[11px] text-neutral-600">committed (illustrative)</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] uppercase tracking-[0.22em] text-neutral-600">Active cards</dt>
+                <dd className="mt-1 font-geist-mono text-lg tabular-nums text-white">{MOCK_FUNDED_ACTIVE.length}</dd>
+                <dd className="mt-0.5 text-[11px] text-neutral-600">design previews</dd>
+              </div>
+            </dl>
+          </motion.header>
+
+          <section className="mb-16 md:mb-20">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">
+                  Featured launches
+                </h2>
+                <p className="mt-1 font-geist text-[12px] text-neutral-600">Select a card to open the investment memo.</p>
+              </div>
             </div>
-          ) : graveyardIdeas.length === 0 ? (
-            <div className="text-center py-10 text-neutral-600 font-satoshi">
-              <Skull className="w-8 h-8 mx-auto mb-2 opacity-40" />
-              <p className="text-xs">No graveyard ideas — all funded projects are still alive.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {graveyardIdeas.map((idea) => {
-                const colors = categoryColors[idea.category] || categoryColors["AI x Crypto"];
-                const vault = vaultStates[idea.id];
-                // Launch figure = what the token actually raised at funding
-                // close. Refund figure = USDG the ideator deposited into the
-                // vault for holders to burn their tokens against. We compare
-                // the two to show how much of the raise is being returned.
-                const launchedAmount = idea.raisedAmount || 0;
-                const refundedAmount = vault
-                  ? Number(vault.totalUsdgDeposited) / 10 ** vault.usdgDecimals
-                  : 0;
-                // Delta as % of launch. Guard against divide-by-zero for the
-                // rare legacy idea that has a vault but no raise record.
-                const deltaPct =
-                  launchedAmount > 0
-                    ? ((refundedAmount - launchedAmount) / launchedAmount) * 100
-                    : null;
-                const deltaIsLoss = deltaPct !== null && deltaPct < 0;
-                const deltaColor =
-                  deltaPct === null
-                    ? "text-neutral-500"
-                    : deltaIsLoss
-                      ? "text-red-400"
-                      : "text-emerald-400";
-                return (
-                  <div
+
+            <motion.div
+              className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
+              variants={stagger}
+              initial="hidden"
+              animate="show"
+            >
+              {MOCK_FUNDED_ACTIVE.map((project, index) => (
+                <MockPortfolioCard key={project.slug} project={project} index={index} />
+              ))}
+            </motion.div>
+          </section>
+
+          <section className="mb-16 md:mb-20">
+            <h2 className="mb-1 font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">Live registry</h2>
+            <p className="mb-6 max-w-xl font-geist text-[12px] text-neutral-600">
+              On-chain ideas with minted exposure — pulled from your connected data source.
+            </p>
+            {isLoading ? (
+              <div className="flex items-center gap-2 py-12 text-neutral-500">
+                <Loader2 className="h-5 w-5 animate-spin text-orange-500" />
+                <span className="font-geist text-[13px]">Loading registry…</span>
+              </div>
+            ) : fundedIdeas.length === 0 ? (
+              <p className="border-t border-white/[0.06] py-10 font-geist text-[13px] text-neutral-600">
+                No live funded ideas in this environment yet.
+              </p>
+            ) : (
+              <div className="border-t border-white/[0.06]">
+                {fundedIdeas.map((idea) => (
+                  <LiveFundedRow
                     key={idea.id}
+                    idea={idea}
                     onClick={() => handleIdeaClick(idea)}
-                    className="relative rounded-2xl bg-white/[0.01] border border-white/[0.06] hover:border-red-500/30 transition-all cursor-pointer group overflow-hidden"
-                  >
-                    {/* Accent Line */}
-                    <div className="h-[2px] bg-gradient-to-r from-red-500/30 via-neutral-500/20 to-transparent" />
-                    {/* Redemption Badge */}
-                    <div className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/25 backdrop-blur-sm text-[10px] font-semibold text-red-300">
-                      Redemption
-                    </div>
-                    {/* Image */}
-                    <div className="relative h-48 bg-neutral-900/30">
-                      {idea.generatedImageUrl ? (
-                        <img
-                          src={idea.generatedImageUrl}
-                          alt={idea.title}
-                          className="w-full h-full object-cover opacity-50 grayscale group-hover:opacity-70 transition-all duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Skull className="w-8 h-8 text-neutral-500/30" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/60 to-transparent" />
-                    </div>
-                    {/* Content */}
-                    <div className="-mt-8 relative z-10 p-5">
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <h4 className="text-sm font-medium text-neutral-200 font-satoshi line-clamp-1 group-hover:text-red-100 transition-colors">
-                          {idea.title}
-                        </h4>
-                        <span className={`shrink-0 px-1.5 py-0.5 rounded text-[8px] font-medium ${colors.bg} ${colors.text} ${colors.border} border opacity-60`}>
-                          {idea.category}
-                        </span>
-                      </div>
-                      {/* Launched vs Refunded — two-column compact readout
-                          with a delta chip. Uses whole-number formatting;
-                          fractional stablecoin amounts add noise here. */}
-                      <div className="grid grid-cols-2 gap-2 mb-2 font-satoshi">
-                        <div>
-                          <div className="text-[9px] uppercase tracking-wider text-neutral-600 font-semibold">
-                            Launched
-                          </div>
-                          <div className="flex items-center gap-0.5 text-xs font-bold text-neutral-200">
-                            <DollarSign className="w-2.5 h-2.5 text-neutral-500" />
-                            {launchedAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-[9px] uppercase tracking-wider text-neutral-600 font-semibold">
-                            Refunded
-                          </div>
-                          <div className="flex items-center gap-0.5 text-xs font-bold text-neutral-200">
-                            <DollarSign className="w-2.5 h-2.5 text-neutral-500" />
-                            {refundedAmount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between text-[10px] font-satoshi">
-                        <span className={`font-bold ${deltaColor}`}>
-                          {deltaPct === null
-                            ? "—"
-                            : `${deltaPct > 0 ? "+" : ""}${deltaPct.toFixed(1)}%`}
-                        </span>
-                        <span className="text-red-400/80 font-medium">
-                          → redeem tokens
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                    extra={
+                      idea.capReachedAt ? (
+                        <span className="font-geist text-[11px] text-neutral-600">Round window may apply</span>
+                      ) : null
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section>
+            <h2 className="mb-1 font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">Archive</h2>
+            <p className="mb-6 max-w-xl font-geist text-[12px] text-neutral-600">
+              Programs with concluded liquidity or redemption flows — design previews plus live vault-linked rows.
+            </p>
+
+            <motion.div
+              className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-60px" }}
+            >
+              {MOCK_FUNDED_GRAVEYARD.map((project, index) => (
+                <MockPortfolioCard key={project.slug} project={project} index={index} />
+              ))}
+            </motion.div>
+
+            {isLoading || isCheckingVaults ? (
+              <div className="flex items-center gap-2 py-6 text-neutral-500">
+                <Loader2 className="h-5 w-5 animate-spin text-orange-500/80" />
+                <span className="font-geist text-[12px]">Checking vault state…</span>
+              </div>
+            ) : graveyardIdeas.length === 0 ? null : (
+              <>
+                <h3 className="mb-3 font-geist-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600">
+                  Redemption-linked
+                </h3>
+                <div className="border-t border-white/[0.06]">
+                  {graveyardIdeas.map((idea) => {
+                    const vault = vaultStates[idea.id];
+                    const launchedAmount = idea.raisedAmount || 0;
+                    const refundedAmount = vault
+                      ? Number(vault.totalUsdgDeposited) / 10 ** vault.usdgDecimals
+                      : 0;
+                    const deltaPct =
+                      launchedAmount > 0 ? ((refundedAmount - launchedAmount) / launchedAmount) * 100 : null;
+                    return (
+                      <LiveFundedRow
+                        key={idea.id}
+                        idea={idea}
+                        onClick={() => handleIdeaClick(idea)}
+                        extra={
+                          <span className="font-geist text-[11px] text-neutral-500">
+                            Launched {fmtMoney(launchedAmount)} · Refund {fmtMoney(refundedAmount)}
+                            {deltaPct != null ? (
+                              <span className={deltaPct < 0 ? " text-red-400/90" : " text-emerald-400/90"}>
+                                {" "}
+                                ({deltaPct > 0 ? "+" : ""}
+                                {deltaPct.toFixed(1)}%)
+                              </span>
+                            ) : null}
+                            <span className="block text-orange-400/80">Open detail to redeem</span>
+                          </span>
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </section>
+
+          <p className="mt-16 border-t border-white/[0.06] pt-8 font-geist text-[11px] text-neutral-600">
+            Featured cards are visual design previews. Live rows reflect your deployment.{" "}
+            <Link to="/ideas" className="text-orange-400/90 underline-offset-4 hover:underline">
+              Back to ideas
+            </Link>
+          </p>
         </div>
       </div>
     </IdeasLayout>

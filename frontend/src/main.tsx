@@ -17,6 +17,7 @@ import PwaInstall from "./pages/PwaInstall"
 import IdeasPage from "./pages/IdeasPage"
 import IdeaDetailPage from "./pages/IdeaDetailPage"
 import FundedPage from "./pages/FundedPage"
+import FundedMockDetailPage from "./pages/FundedMockDetailPage"
 import ExplanationPage from "./pages/ExplanationPage"
 import PublicProfile from "./pages/PublicProfile"
 import IdeaLandingPage from "./pages/IdeaLandingPage"
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.FUNDED,
         element: <FundedPage />,
+      },
+      {
+        path: ROUTES.FUNDED_MOCK,
+        element: <FundedMockDetailPage />,
       },
       {
         path: ROUTES.HACKATHONS,

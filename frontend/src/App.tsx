@@ -60,8 +60,14 @@ function App() {
   }, [location.pathname, navigate]);
 
   const isLandingPage = location.pathname === '/';
-  const isIdeasPage = location.pathname === '/ideas' || location.pathname.startsWith('/ideas/') || 
-    location.pathname === '/teams' || location.pathname === '/explanation' || location.pathname === '/roadmap';
+  const isIdeasPage =
+    location.pathname === '/ideas' ||
+    location.pathname.startsWith('/ideas/') ||
+    location.pathname === '/teams' ||
+    location.pathname === '/explanation' ||
+    location.pathname === '/roadmap' ||
+    location.pathname === '/funded' ||
+    location.pathname.startsWith('/funded/');
   const isPublicProfile = location.pathname.startsWith('/profile/');
   const isHackathonSection = location.pathname.startsWith('/hackathons') ||
     location.pathname.startsWith('/builders') ||

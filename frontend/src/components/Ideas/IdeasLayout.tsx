@@ -1,9 +1,12 @@
 import { ReactNode } from "react";
-import { WalletSelector } from '@/components/Ideas/WalletSelector';
+import { WalletSelector } from "@/components/Ideas/WalletSelector";
 import { IdeasHeader, SubmitIdeaModal, ShareModal } from "@/components/Ideas";
+import Aurora from "@/components/Aurora";
 import type { UseIdeasAuthReturn } from "@/hooks/useIdeasAuth";
 import type { UseIdeasDataReturn } from "@/hooks/useIdeasData";
 import type { ViewType } from "./types";
+
+const AURORA_STOPS = ["#431407", "#ea580c", "#fdba74"];
 
 interface IdeasLayoutProps {
   auth: UseIdeasAuthReturn;
@@ -12,22 +15,14 @@ interface IdeasLayoutProps {
 }
 
 export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutProps) {
-  const switchView = (_view: ViewType) => {
-    // Navigation is now handled by <Link> in IdeasHeader
-  };
+  const switchView = (_view: ViewType) => {};
 
   return (
-    <div className="min-h-screen bg-[#030303] text-white antialiased selection:bg-orange-500/20 selection:text-orange-400">
-      {/* Subtle background effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-orange-500/[0.03] rounded-full blur-[150px]" />
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)`,
-            backgroundSize: "80px 80px",
-          }}
-        />
+    <div className="relative min-h-screen bg-black text-white antialiased selection:bg-orange-500/20 selection:text-orange-200">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.34]">
+        <div className="h-full w-full origin-center -scale-y-100">
+          <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
+        </div>
       </div>
 
       <WalletSelector
@@ -37,7 +32,7 @@ export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutPr
       />
 
       <IdeasHeader
-        currentView={"ideas"}
+        currentView="ideas"
         onViewChange={switchView}
         userProfile={auth.userProfile}
         remainingVotes={auth.remainingVotes}
@@ -52,9 +47,7 @@ export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutPr
         isConnectingWallet={auth.isConnectingWallet}
       />
 
-      <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {children}
-      </main>
+      <main className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-10 md:px-12 md:pt-16">{children}</main>
 
       <SubmitIdeaModal
         isOpen={auth.isSubmitModalOpen}
@@ -79,11 +72,11 @@ export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutPr
 
       <style>{`
         @keyframes fade-in {
-          from { opacity: 0; transform: translateY(10px); }
+          from { opacity: 0; transform: translateY(8px); }
           to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
-          animation: fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          animation: fade-in 0.35s ease-out;
         }
       `}</style>
     </div>

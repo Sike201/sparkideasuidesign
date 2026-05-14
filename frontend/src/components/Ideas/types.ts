@@ -92,7 +92,16 @@ export interface Investment {
 
 export type UserVotes = Record<string, 'up' | 'down'>;
 export type UserCommentVotes = Record<string, 'up' | 'down'>;
-export type ViewType = "ideas" | "idea-detail" | "agents" | "teams" | "explanation" | "roadmap" | "profile" | "funded";
+export type ViewType =
+  | "ideas"
+  | "idea-detail"
+  | "agents"
+  | "teams"
+  | "explanation"
+  | "roadmap"
+  | "profile"
+  | "funded"
+  | "hackathons";
 export type SortOption = "votes" | "newest" | "oldest" | "raised";
 
 export interface DailyVoteTracker {

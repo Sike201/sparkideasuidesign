@@ -747,7 +747,7 @@ export function InvestmentSectionVault({
         100% { transform: scale(1); }
       }
     `}</style>
-      <div className="p-4 rounded-2xl bg-white/[0.02] border border-emerald-500/15">
+      <div className="rounded-none border-0 bg-transparent p-0">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -888,34 +888,36 @@ export function InvestmentSectionVault({
 
         {/* Token selector - hidden when funded */}
         {userProfile.walletConnected && !(idea.timelinePhase != null && idea.timelinePhase >= 4) && (
-          <div className="mb-4 flex items-center gap-2">
+          <div className="mb-4 flex items-stretch gap-2">
             <button
               onClick={() => setSelectedToken("USDC")}
-              className={`flex-1 py-1.5 text-xs font-satoshi font-medium rounded-xl border transition-colors flex items-center justify-center gap-1.5 ${selectedToken === "USDC"
-                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-white/[0.04] border-white/[0.06] text-neutral-500 hover:text-neutral-300"
+              type="button"
+              className={`flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md border py-1.5 text-xs font-satoshi font-medium transition-colors ${selectedToken === "USDC"
+                ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-400"
+                : "border-white/[0.06] bg-white/[0.04] text-neutral-500 hover:text-neutral-300"
                 }`}
             >
-              <img src="/usdc.png" alt="USDC" className="w-4 h-4 rounded-full" />
-              USDC
+              <img src="/usdc.png" alt="" aria-hidden className="h-4 w-4 shrink-0 rounded-full" />
+              <span className="truncate">USDC</span>
             </button>
             <a
               href="https://justspark.notion.site/USDG-VS-USDC-32941bf35b77803d8026fed395ed5e4d?source=copy_link"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.04] border border-white/[0.06] text-neutral-500 hover:text-neutral-300 hover:border-neutral-600 transition-colors text-xs shrink-0"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.06] bg-white/[0.04] text-xs text-neutral-500 transition-colors hover:border-neutral-600 hover:text-neutral-300"
             >
               ?
             </a>
             <button
               onClick={() => setSelectedToken("USDG")}
-              className={`flex-1 py-1.5 text-xs font-satoshi font-medium rounded-xl border transition-colors flex items-center justify-center gap-1.5 ${selectedToken === "USDG"
-                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                : "bg-white/[0.04] border-white/[0.06] text-neutral-500 hover:text-neutral-300"
+              type="button"
+              className={`flex min-w-0 flex-1 items-center justify-center gap-2 rounded-md border py-1.5 text-xs font-satoshi font-medium transition-colors ${selectedToken === "USDG"
+                ? "border-emerald-500/40 bg-emerald-500/20 text-emerald-400"
+                : "border-white/[0.06] bg-white/[0.04] text-neutral-500 hover:text-neutral-300"
                 }`}
             >
-              <img src="/usdg.png" alt="USDG" className="w-4 h-4 rounded-full" />
-              USDG
+              <img src="/usdg.png" alt="" aria-hidden className="h-4 w-4 shrink-0 rounded-full" />
+              <span className="truncate">USDG</span>
             </button>
           </div>
         )}

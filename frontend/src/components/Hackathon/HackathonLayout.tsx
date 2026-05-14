@@ -4,6 +4,10 @@ import { LogIn, Wallet } from "lucide-react";
 import { useWalletContext } from "@/hooks/useWalletContext";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
 import { generateCodeVerifier, generateCodeChallenge } from "@/components/Ideas/utils";
+import { ROUTES } from "@/utils/routes";
+import Aurora from "@/components/Aurora";
+
+const AURORA_STOPS = ["#431407", "#ea580c", "#fdba74"];
 
 interface HackathonLayoutProps {
   children: React.ReactNode;
@@ -110,37 +114,40 @@ export default function HackathonLayout({ children }: HackathonLayoutProps) {
     }
   };
 
-  const navLinks = [
-    { label: "hackathons", path: "/hackathons" },
+  const ecosystemNav = [
+    { label: "Ideas", path: ROUTES.IDEAS },
+    { label: "Funded", path: ROUTES.FUNDED },
+    { label: "How it works", path: ROUTES.EXPLANATION },
+    { label: "Hackathons", path: ROUTES.HACKATHONS },
   ];
 
   const isActive = (path: string) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
 
   return (
-    <div className="scanlines min-h-screen flex flex-col bg-[#050505] text-[#B0B3B8] font-mono text-sm antialiased">
-      {/* Header */}
-      <header className="fixed top-0 w-full z-50 border-b border-[#2A3040] bg-[#050505]/90 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          {/* Logo */}
+    <div className="relative flex min-h-screen flex-col bg-black text-neutral-400 antialiased selection:bg-orange-500/20 selection:text-orange-200">
+      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.34]">
+        <div className="h-full w-full origin-center -scale-y-100">
+          <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
+        </div>
+      </div>
+
+      <header className="fixed top-0 z-50 w-full border-b border-white/[0.06] bg-black/75 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-6 md:px-10">
           <Link
-            to="/hackathons"
-            className="text-sm font-bold hover:opacity-80 transition-opacity"
+            to={ROUTES.LANDING_PAGE}
+            className="shrink-0 opacity-90 transition-opacity hover:opacity-100"
           >
-            <span className="text-[#F25C05]">&gt;</span>{" "}
-            <span className="text-[#F5F5F6]">SPARK</span>
+            <img src="/sparklogo.png" alt="Spark" className="h-6 w-auto md:h-7" />
           </Link>
 
-          {/* Nav */}
-          <nav className="flex gap-8">
-            {navLinks.map((link) => (
+          <nav className="flex min-w-0 flex-1 justify-center gap-4 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-6 md:px-4 [&::-webkit-scrollbar]:hidden">
+            {ecosystemNav.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-xs uppercase tracking-wider transition-colors ${
-                  isActive(link.path)
-                    ? "text-[#F5F5F6] border-b border-[#F25C05]"
-                    : "text-[#B0B3B8] hover:text-[#F5F5F6]"
+                className={`shrink-0 text-[11px] font-medium transition-colors md:text-[13px] font-geist ${
+                  isActive(link.path) ? "text-orange-400" : "text-neutral-500 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -148,7 +155,7 @@ export default function HackathonLayout({ children }: HackathonLayoutProps) {
             ))}
           </nav>
 
-          {/* Login / User menu */}
+          <div className="flex shrink-0 items-center">
           {(isWalletConnected || isXConnected) ? (
             <div className="relative" ref={menuRef}>
               <button
@@ -305,49 +312,41 @@ export default function HackathonLayout({ children }: HackathonLayoutProps) {
               )}
             </div>
           )}
+          </div>
         </div>
       </header>
 
-      {/* Content */}
-      <main className="pt-14 flex-1">{children}</main>
+      <main className="relative z-10 min-w-0 flex-1 overflow-x-hidden pt-14">{children}</main>
 
-      {/* Footer */}
-      <footer className="border-t border-[#2A3040] bg-[#050505] py-8 mt-auto">
-        <div className="max-w-6xl mx-auto px-6 flex justify-between items-start text-xs font-mono">
+      <footer className="relative z-10 mt-auto border-t border-white/[0.06] bg-black/50 py-10 backdrop-blur-[1px]">
+        <div className="mx-auto flex max-w-3xl flex-col justify-between gap-6 px-6 text-[12px] text-neutral-500 md:flex-row md:items-start md:px-10 font-geist">
           <div>
-            <p className="text-[#F25C05] font-bold">
-              &gt; SPARK HACKATHONS
-            </p>
-            <p className="text-[#A0A3A9] mt-1">&copy; 2026 Spark</p>
+            <p className="font-geist-mono text-[10px] uppercase tracking-[0.28em] text-orange-400/90">Spark</p>
+            <p className="mt-2 text-neutral-600">&copy; 2026</p>
           </div>
-          <div className="text-right space-y-1">
-            <div className="flex items-center gap-3">
-              <a
-                href="https://x.com/JustSparkIdeas"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#B0B3B8] hover:text-[#F5F5F6] transition-colors"
-              >
-                &lt;x&gt; twitter
-              </a>
-              <a
-                href="https://t.me/sparkdotfun"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#B0B3B8] hover:text-[#F5F5F6] transition-colors"
-              >
-                &lt;tg&gt; telegram
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[#B0B3B8] hover:text-[#F5F5F6] cursor-pointer transition-colors">
-                terms
-              </span>
-              <span className="text-[#444B57]">::</span>
-              <span className="text-[#B0B3B8] hover:text-[#F5F5F6] cursor-pointer transition-colors">
-                privacy
-              </span>
-            </div>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
+            <a
+              href="https://x.com/JustSparkIdeas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              X
+            </a>
+            <a
+              href="https://t.me/sparkdotfun"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              Telegram
+            </a>
+            <Link to={ROUTES.TERMS} className="transition-colors hover:text-white">
+              Terms
+            </Link>
+            <Link to={ROUTES.PRIVACY} className="transition-colors hover:text-white">
+              Privacy
+            </Link>
           </div>
         </div>
       </footer>

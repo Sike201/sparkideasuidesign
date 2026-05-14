@@ -20,6 +20,8 @@ import {
   mapBackendIdea,
   mapBackendComment,
 } from "@/components/Ideas";
+import { toggleIdeaVote } from "@/components/Ideas/feedVoteUtils";
+import { getDemoIdeaBySlug, isDemoIdeaId } from "@/data/demoFeedIdeas";
 import type { UseIdeasAuthReturn } from "./useIdeasAuth";
 
 export interface UseIdeasDataReturn {
@@ -157,6 +159,16 @@ export function useIdeasData(auth: UseIdeasAuthReturn): UseIdeasDataReturn {
   // Load idea by slug
   const loadIdeaBySlug = useCallback(async (ideaSlug: string) => {
     setIsLoadingIdeas(true);
+    const demoIdea = getDemoIdeaBySlug(ideaSlug);
+    if (demoIdea) {
+      setSelectedIdea({
+        ...demoIdea,
+        userVote: (userVotes[demoIdea.id] as Idea["userVote"] | undefined) ?? demoIdea.userVote ?? null,
+      });
+      setComments([]);
+      setIsLoadingIdeas(false);
+      return;
+    }
     try {
       const response = await backendSparkApi.getIdeaBySlug(ideaSlug);
       if (response.idea) {
@@ -269,6 +281,26 @@ export function useIdeasData(auth: UseIdeasAuthReturn): UseIdeasDataReturn {
 
     if (isNewVote && !canVoteToday()) {
       toast.warning(`You've reached your daily limit of ${DAILY_VOTE_LIMIT} votes. Come back tomorrow!`);
+      return;
+    }
+
+    if (isDemoIdeaId(ideaId)) {
+      const newVotes = { ...userVotes };
+      if (currentVote === voteType) {
+        delete newVotes[ideaId];
+      } else {
+        newVotes[ideaId] = voteType;
+        if (isNewVote) {
+          incrementDailyVoteCount();
+          auth.setRemainingVotes(getRemainingVotes());
+        }
+      }
+      setUserVotes(newVotes);
+      saveUserVotes(newVotes);
+      setIdeas((prev) => prev.map((i) => (i.id === ideaId ? toggleIdeaVote(i, voteType) : i)));
+      if (selectedIdea?.id === ideaId) {
+        setSelectedIdea((prev) => (prev && prev.id === ideaId ? toggleIdeaVote(prev, voteType) : prev));
+      }
       return;
     }
 

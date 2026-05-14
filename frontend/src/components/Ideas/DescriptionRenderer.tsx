@@ -51,19 +51,21 @@ export function DescriptionRenderer({ description }: DescriptionRendererProps) {
   const sections = parseDescription(description);
 
   return (
-    <div className="prose prose-invert prose-sm max-w-none">
-      <div className="text-sm text-neutral-300 leading-relaxed space-y-6">
+    <div className="prose prose-invert max-w-none">
+      <div className="space-y-8 text-[15px] leading-[1.65] text-neutral-300">
         {sections.map((section, index) => (
           <div key={index}>
             {section.title ? (
               <>
-                <h3 className="text-base font-semibold text-white mb-2">{section.title}</h3>
-                <div className="text-sm text-neutral-300 leading-relaxed whitespace-pre-wrap">
+                <h3 className="mb-2 font-satoshi text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-500">
+                  {section.title}
+                </h3>
+                <div className="whitespace-pre-wrap text-[15px] leading-[1.65] text-neutral-200">
                   {section.content}
                 </div>
               </>
             ) : (
-              <div className="text-sm text-neutral-300 leading-relaxed whitespace-pre-wrap">
+              <div className="whitespace-pre-wrap text-[15px] leading-[1.65] text-neutral-200">
                 {section.content}
               </div>
             )}

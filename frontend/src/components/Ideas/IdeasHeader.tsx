@@ -4,6 +4,7 @@ import { Lightbulb, Users, User, Wallet, LogOut, Twitter, Loader2, Send, Trophy,
 import { UserProfile, ViewType } from "./types";
 import { DAILY_VOTE_LIMIT } from "./utils";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
+import { ROUTES } from "@/utils/routes";
 
 interface IdeasHeaderProps {
   currentView: ViewType;
@@ -147,21 +148,22 @@ export function IdeasHeader({
   };
 
   const navItems = [
-    { id: "ideas" as ViewType, label: "Ideas", icon: Lightbulb, path: "/ideas" },
-    { id: "funded" as ViewType, label: "Funded", icon: Trophy, path: "/funded" },
-    // { id: "teams" as ViewType, label: "Teams", icon: Users, path: "/teams" },
-    { id: "explanation" as ViewType, label: "Explanation", icon: Lightbulb, path: "/explanation" },
+    { id: "ideas" as ViewType, label: "Ideas", icon: Lightbulb, path: ROUTES.IDEAS },
+    { id: "funded" as ViewType, label: "Funded", icon: Trophy, path: ROUTES.FUNDED },
+    { id: "explanation" as ViewType, label: "How it works", icon: Lightbulb, path: ROUTES.EXPLANATION },
+    { id: "hackathons" as ViewType, label: "Hackathons", icon: Flame, path: ROUTES.HACKATHONS },
   ];
 
   // Determine active nav item from current path
   const getActiveView = () => {
     const path = location.pathname;
-    if (path === "/funded") return "funded";
+    if (path === ROUTES.FUNDED || path.startsWith(`${ROUTES.FUNDED}/`)) return "funded";
     if (path === "/teams") return "teams";
     if (path === "/agents" || path.startsWith("/agents/")) return "agents";
-    if (path === "/explanation") return "explanation";
-    if (path === "/roadmap") return "roadmap";
-    if (path === "/ideas" || path.startsWith("/ideas/")) return "ideas";
+    if (path === ROUTES.EXPLANATION) return "explanation";
+    if (path === ROUTES.ROADMAP) return "roadmap";
+    if (path === ROUTES.HACKATHONS || path.startsWith(`${ROUTES.HACKATHONS}/`)) return "hackathons";
+    if (path === ROUTES.IDEAS || path.startsWith(`${ROUTES.IDEAS}/`)) return "ideas";
     return currentView;
   };
 
@@ -169,34 +171,28 @@ export function IdeasHeader({
 
   return (
     <>
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#030303]/80 border-b border-white/[0.04]">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/ideas" className="flex items-center hover:opacity-80 transition-opacity">
-              <img src="/sparklogo.png" alt="Spark" className="h-7 w-auto" />
-            </Link>
+      <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-black/75 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-6 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4 md:px-12">
+            <div className="hidden md:block" aria-hidden />
 
-            {/* Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            {/* Navigation — centered on desktop */}
+            <nav className="hidden items-center justify-center gap-5 md:flex">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.path}
-                  className={`flex items-center px-4 py-2 rounded-lg text-[13px] font-medium tracking-wide transition-all duration-300 font-satoshi ${activeView === item.id
-                      ? "bg-white/[0.08] text-white border border-white/[0.06]"
-                      : "text-neutral-500 hover:text-white hover:bg-white/[0.04]"
-                    }`}
+                  className={`text-[13px] font-medium transition-colors font-geist ${
+                    activeView === item.id ? "text-orange-400" : "text-neutral-500 hover:text-white"
+                  }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="w-px h-5 bg-white/[0.06] mx-2" />
               <a
                 href="https://x.com/JustSparkIdeas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-8 h-8 rounded-lg text-neutral-500 hover:text-white hover:bg-white/[0.04] transition-all duration-300"
+                className="text-neutral-500 transition-colors hover:text-orange-400"
                 title="X (Twitter)"
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -207,7 +203,7 @@ export function IdeasHeader({
                 href="https://t.me/sparkdotfun"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-8 h-8 rounded-lg text-neutral-500 hover:text-white hover:bg-white/[0.04] transition-all duration-300"
+                className="text-neutral-500 transition-colors hover:text-orange-400"
                 title="Telegram"
               >
                 <Send className="w-3.5 h-3.5" />
@@ -215,40 +211,42 @@ export function IdeasHeader({
             </nav>
 
             {/* Right Section */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-1 items-center justify-end gap-3 md:flex-none">
               {/* Remaining Votes */}
               {userProfile.xConnected && (
-                <span className="hidden sm:inline text-[11px] text-neutral-600 font-medium font-satoshi">
-                  {remainingVotes}/{DAILY_VOTE_LIMIT} votes
+                <span className="hidden font-geist-mono text-[11px] text-neutral-600 sm:inline">
+                  {remainingVotes}/{DAILY_VOTE_LIMIT}
                 </span>
               )}
 
               {/* Hamburger Button (mobile only) */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg text-neutral-400 hover:text-white transition-colors"
+                className="flex h-9 w-9 items-center justify-center text-neutral-400 transition-colors hover:text-white md:hidden"
               >
                 {isMobileMenuOpen ? <XIcon className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
 
               {/* Submit Button */}
               <button
+                type="button"
                 onClick={onOpenSubmitModal}
-                className="group flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-black text-xs font-bold rounded-xl hover:shadow-lg hover:shadow-orange-500/20 transition-all duration-300 font-satoshi"
+                className="bg-orange-500 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-orange-400 font-geist"
               >
-                Submit Idea
+                Post
               </button>
 
               {/* Profile Dropdown */}
               <div className="relative" data-profile-dropdown>
                 <button
+                  type="button"
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.06] hover:border-orange-500/30 hover:bg-white/[0.06] transition-all duration-300"
+                  className="flex h-9 w-9 items-center justify-center bg-white/[0.06] transition-colors hover:bg-white/[0.1]"
                 >
                   {userProfile.xConnected ? (
-                    <img src={userProfile.xAvatar} alt={userProfile.xUsername} className="w-6 h-6 rounded-md" />
+                    <img src={userProfile.xAvatar} alt={userProfile.xUsername} className="h-7 w-7 object-cover" />
                   ) : (
-                    <User className="w-4 h-4 text-neutral-400" />
+                    <User className="h-4 w-4 text-neutral-400" />
                   )}
                 </button>
 
@@ -469,7 +467,6 @@ export function IdeasHeader({
                 )}
               </div>
             </div>
-          </div>
         </div>
       </header>
 

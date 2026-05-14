@@ -6,6 +6,7 @@ export enum ROUTES {
   EXPLANATION = "/explanation",
   ROADMAP = "/roadmap",
   FUNDED = "/funded",
+  FUNDED_MOCK = "/funded/mock/:slug",
   TERMS_OF_USE = "https://justspark.notion.site/SPARK-PROTOCOL-TERMS-OF-USE-32541bf35b7780c697c2f28fa430b615",
   TERMS_AND_CONDITIONS = "/terms-and-conditions",
   // Static legal pages required by the Solana dApp Store submission

@@ -5,8 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import HackathonLayout from "@/components/Hackathon/HackathonLayout";
 import { StatusBadge } from "@/components/Hackathon/AsciiBox";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
+import type { HackathonModel } from "@/data/api/backendSparkApi";
 import type { HackathonStatus } from "@/components/Hackathon/types";
 import { withSwrCache } from "@/utils/miniCache";
+import { MOCK_HACKATHONS_FOR_LIST } from "@/data/mockHackathonsFeed";
 
 /* ── compute effective status from dates ───────────────── */
 
@@ -87,10 +89,10 @@ function CountdownDisplay({
 type FilterTab = "all" | "live" | "upcoming" | "past";
 
 const TABS: { label: string; value: FilterTab }[] = [
-  { label: "ALL", value: "all" },
-  { label: "LIVE", value: "live" },
-  { label: "UPCOMING", value: "upcoming" },
-  { label: "PAST", value: "past" },
+  { label: "All", value: "all" },
+  { label: "Live", value: "live" },
+  { label: "Upcoming", value: "upcoming" },
+  { label: "Past", value: "past" },
 ];
 
 /* ── page component ────────────────────────────────────── */
@@ -121,9 +123,22 @@ function HackathonsPage() {
 
   const buildersCount = buildersData?.builders?.length ?? 0;
 
-  const hackathons = (apiData?.hackathons || []).map((h) => ({
+  const apiRows: HackathonModel[] = (apiData?.hackathons || []).map((h) => ({
     ...h,
-    status: computeStatus(h as any),
+    proposals: h.proposals || [],
+    milestones: h.milestones || [],
+  }));
+
+  const seenIds = new Set(apiRows.map((h) => h.id));
+  const mockRows = MOCK_HACKATHONS_FOR_LIST.filter((m) => !seenIds.has(m.id)).map((h) => ({
+    ...h,
+    proposals: h.proposals || [],
+    milestones: h.milestones || [],
+  }));
+
+  const hackathons = [...mockRows, ...apiRows].map((h) => ({
+    ...h,
+    status: computeStatus(h as { status: HackathonStatus; start_date?: string; end_date?: string }),
     proposals: h.proposals || [],
     milestones: h.milestones || [],
   }));
@@ -174,32 +189,34 @@ function HackathonsPage() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="max-w-5xl mx-auto px-3 sm:px-6 pt-24 pb-16 font-mono">
+        <div className="mx-auto max-w-3xl px-6 pb-16 pt-20 font-geist text-neutral-400 antialiased md:px-10 md:pt-24">
           {/* ── header ─────────────────────────────────── */}
-          <div className="flex items-baseline justify-between mb-8">
-            <h1 className="text-2xl uppercase tracking-wider font-bold">
-              <span className="text-[#F25C05]">&gt;</span>{" "}
-              <span className="text-[#F5F5F6]">HACKATHONS</span>
-            </h1>
-            {buildersCount > 0 && (
-              <span className="text-xs text-[#A0A3A9]">{buildersCount.toLocaleString()} builders</span>
-            )}
+          <div className="mb-10 md:mb-12">
+            <p className="font-geist-mono text-[11px] uppercase tracking-[0.3em] text-orange-400/90">Events</p>
+            <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
+              <h1 className="font-satoshi text-[26px] font-semibold tracking-tight text-white sm:text-[28px]">Hackathons</h1>
+              {buildersCount > 0 && (
+                <span className="text-[11px] text-neutral-500 md:text-[12px]">
+                  {buildersCount.toLocaleString()} builders
+                </span>
+              )}
+            </div>
           </div>
 
           {/* ── filter bar ─────────────────────────────── */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             {/* tabs */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-1">
               {TABS.map((tab) => {
                 const active = filter === tab.value;
                 return (
                   <button
                     key={tab.value}
                     onClick={() => setFilter(tab.value)}
-                    className={`text-xs font-mono px-3 py-1.5 border rounded-none transition-colors ${
+                    className={`rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-colors md:text-[12px] ${
                       active
-                        ? "text-[#F5F5F6] border-[#F25C05] bg-[#F25C05]/10"
-                        : "text-[#A0A3A9] border-[#444B57] hover:border-[#F25C05]/30"
+                        ? "text-orange-400"
+                        : "text-neutral-500 hover:text-white"
                     }`}
                   >
                     {tab.label}
@@ -209,16 +226,18 @@ function HackathonsPage() {
             </div>
 
             {/* search */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-[#A0A3A9]">search:</span>
+            <label className="flex min-w-0 flex-1 items-center gap-2 sm:max-w-xs">
+              <span className="sr-only">Search hackathons</span>
+              <span className="shrink-0 font-geist-mono text-[10px] uppercase tracking-wider text-neutral-600">Search</span>
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="bg-transparent border-b border-[#444B57] text-xs text-[#F5F5F6] px-1 py-1 w-full sm:w-48 focus:border-[#F25C05] outline-none font-mono rounded-none"
+                className="h-9 min-w-0 flex-1 border-b border-white/[0.08] bg-transparent text-[12px] text-white outline-none transition-colors placeholder:text-neutral-600 focus:border-orange-500/40"
+                placeholder="Title"
                 spellCheck={false}
               />
-            </div>
+            </label>
           </div>
 
           {/* ── loading ────────────────────────────────── */}
@@ -229,87 +248,88 @@ function HackathonsPage() {
           )}
 
           {/* ── cards list ─────────────────────────────── */}
-          {!isLoading && <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.03 } },
-            }}
-            className="space-y-4"
-          >
-            {filtered.map((h) => (
-              <motion.div
-                key={h.id}
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: { opacity: 1 },
-                }}
-              >
-                <Link to={`/hackathons/${h.id}`}>
-                  <div className="border border-dashed border-[#2A3040] hover:border-[#F25C05]/40 transition-all duration-300 cursor-pointer rounded-none">
-                    <div className="flex items-stretch">
-                      {/* image strip */}
-                      {h.idea_image_url && (
-                        <div className="w-16 sm:w-20 shrink-0 border-r border-dashed border-[#2A3040]">
-                          <img
-                            src={h.idea_image_url}
-                            alt=""
-                            className="w-full h-full object-cover opacity-70"
-                          />
-                        </div>
-                      )}
+          {!isLoading && (
+            <motion.div
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.03 } },
+              }}
+              className="space-y-5"
+            >
+              {filtered.map((h) => (
+                <motion.div
+                  key={h.id}
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: { opacity: 1 },
+                  }}
+                >
+                  <Link to={`/hackathons/${h.id}`}>
+                    <div className="border border-white/[0.06] bg-white/[0.02] transition-colors duration-300 hover:border-orange-500/20 hover:bg-white/[0.04]">
+                      <div className="flex items-stretch">
+                        {/* image strip */}
+                        {h.idea_image_url && (
+                          <div className="w-16 shrink-0 border-r border-white/[0.06] sm:w-20">
+                            <img
+                              src={h.idea_image_url}
+                              alt=""
+                              className="h-full w-full object-cover opacity-80"
+                            />
+                          </div>
+                        )}
 
-                      {/* main content */}
-                      <div className="flex-1 px-3 sm:px-5 py-3 min-w-0">
-                        {/* mobile: stacked layout */}
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0 flex-1">
-                            <span className="text-sm font-bold text-[#F5F5F6] block truncate">
-                              {h.idea_title}
-                            </span>
-                            <div className="flex flex-wrap items-center gap-2 mt-1">
-                              <span className="text-xs text-[#A0A3A9]">
-                                {(h as any).proposals_count ?? h.proposals?.length ?? 0} builder{((h as any).proposals_count ?? h.proposals?.length ?? 0) !== 1 ? "s" : ""}
+                        {/* main content */}
+                        <div className="min-w-0 flex-1 px-3 py-4 sm:px-5">
+                          {/* mobile: stacked layout */}
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0 flex-1">
+                              <span className="block truncate font-satoshi text-[15px] font-semibold tracking-tight text-white sm:text-[16px]">
+                                {h.idea_title}
                               </span>
-                              {(h as any).category && (
-                                <span className="text-[10px] text-[#F25C05] border border-[#F25C05]/30 bg-[#F25C05]/5 px-1.5 py-0.5">
-                                  {(h as any).category}
+                              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                <span className="text-[11px] text-neutral-500">
+                                  {(h as any).proposals_count ?? h.proposals?.length ?? 0} builder
+                                  {((h as any).proposals_count ?? h.proposals?.length ?? 0) !== 1 ? "s" : ""}
                                 </span>
-                              )}
+                                {(h as any).category && (
+                                  <span className="border border-orange-500/25 bg-orange-500/5 px-1.5 py-0.5 font-geist-mono text-[10px] uppercase tracking-wider text-orange-400/90">
+                                    {(h as any).category}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex shrink-0 flex-col items-end">
+                              <StatusBadge status={h.status} />
+                              <div className="mt-1">
+                                <CountdownDisplay
+                                  status={h.status}
+                                  countdown_target={h.countdown_target}
+                                  start_date={(h as any).start_date}
+                                  end_date={(h as any).end_date}
+                                />
+                              </div>
                             </div>
                           </div>
-                          <div className="flex flex-col items-end shrink-0">
-                            <StatusBadge status={h.status} />
-                            <div className="mt-1">
-                              <CountdownDisplay
-                                status={h.status}
-                                countdown_target={h.countdown_target}
-                                start_date={(h as any).start_date}
-                                end_date={(h as any).end_date}
-                              />
-                            </div>
+                          {/* prize row */}
+                          <div className="mt-3">
+                            <span className="text-[13px] font-semibold text-orange-400/95 sm:text-[14px]">
+                              {formatPrize(h.usdg_amount)}
+                            </span>
                           </div>
-                        </div>
-                        {/* prize row */}
-                        <div className="mt-2">
-                          <span className="text-sm sm:text-base font-bold text-[#F25C05]">
-                            {formatPrize(h.usdg_amount)}
-                          </span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                  </Link>
+                </motion.div>
+              ))}
 
-            {filtered.length === 0 && (
-              <div className="text-center text-xs text-[#A0A3A9] py-12">
-                no hackathons found_
-              </div>
-            )}
-          </motion.div>}
+              {filtered.length === 0 && (
+                <div className="py-14 text-center text-[12px] text-neutral-600">No hackathons match.</div>
+              )}
+            </motion.div>
+          )}
         </div>
       </motion.div>
     </HackathonLayout>

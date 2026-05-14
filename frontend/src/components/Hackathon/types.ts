@@ -58,6 +58,8 @@ export interface Hackathon {
   idea_title: string;
   idea_slug: string;
   idea_image_url: string;
+  /** Shown on the public hackathons index (list API). */
+  category?: string;
   usdg_amount: number;
   status: HackathonStatus;
   countdown_target: string;

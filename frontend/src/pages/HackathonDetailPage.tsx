@@ -7,13 +7,13 @@ import HackathonLayout from "@/components/Hackathon/HackathonLayout";
 import WalletProfileBadge, { type WalletProfile } from "@/components/Hackathon/WalletProfileBadge";
 import {
   AsciiBox,
-  SectionDivider,
   StatusBadge,
   OddsBar,
 } from "@/components/Hackathon/AsciiBox";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
 import type { TokenHolderModel } from "@/data/api/backendSparkApi";
 import { withSwrCache } from "@/utils/miniCache";
+import { getMockHackathon } from "@/components/Hackathon/mockData";
 import type { Hackathon, Proposal, HackathonStatus } from "@/components/Hackathon/types";
 import { useWalletContext } from "@/hooks/useWalletContext";
 import CombinatorMarket from "@/components/Combinator/CombinatorMarket";
@@ -715,13 +715,13 @@ function DecisionMarketSection({
             />
           )}
 
-          {/* Legacy iframe fallback */}
+          {/* Legacy iframe embed (same behavior as before dossier UI pass) */}
           {!livePda && hackathon.combinator_chart_url && (
             <div>
               <iframe
                 src={hackathon.combinator_chart_url}
                 sandbox="allow-scripts allow-same-origin"
-                className="w-full aspect-[16/9] border border-[#444B57]"
+                className="aspect-[16/9] w-full border border-white/[0.12]"
                 title="Decision Market Chart"
               />
               {hackathon.combinator_trade_url && (
@@ -729,7 +729,7 @@ function DecisionMarketSection({
                   href={hackathon.combinator_trade_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-[#444B57] py-2 w-full text-center text-xs text-[#F5F5F6] hover:border-[#F25C05]/50 hover:bg-[#131822] mt-3 block transition-all"
+                  className="mt-3 block w-full border border-white/[0.12] py-2 text-center text-xs text-neutral-200 transition-all hover:border-orange-500/40 hover:bg-white/[0.04]"
                 >
                   {">> [ TRADE ON COMBINATOR.TRADE ↗ ] <<"}
                 </a>
@@ -856,7 +856,7 @@ export default function HackathonDetailPage() {
   const { address: walletAddress, signMessage, signTransaction, walletProvider } = useWalletContext();
   const queryClient = useQueryClient();
 
-  const { data: apiData, isLoading } = useQuery({
+  const { data: apiData, isLoading, isError } = useQuery({
     queryKey: ["hackathon", id],
     // Cache key includes the id so two hackathons don't overwrite
     // each other's cached payloads. 5-min TTL is short enough that
@@ -883,14 +883,26 @@ export default function HackathonDetailPage() {
         milestones: (h.milestones || []) as any,
       } as unknown as Hackathon;
     }
+    if (isError && id) {
+      const mock = getMockHackathon(id);
+      if (mock) {
+        const effectiveStatus = computeStatus(mock);
+        return {
+          ...mock,
+          status: effectiveStatus,
+          proposals: (mock.proposals || []) as Proposal[],
+          milestones: mock.milestones,
+        } as Hackathon;
+      }
+    }
     return undefined;
-  }, [apiData]);
+  }, [apiData, id, isError]);
 
   // Fetch the linked idea to get token_address
   const { data: ideaData } = useQuery({
     queryFn: () => backendSparkApi.getIdeaBySlug(hackathon!.idea_slug),
     queryKey: ["idea-for-hackathon", hackathon?.idea_slug],
-    enabled: !!hackathon?.idea_slug,
+    enabled: !!hackathon?.idea_slug && hackathon.id !== "h-opb",
     refetchOnWindowFocus: false,
   });
 
@@ -1059,10 +1071,10 @@ export default function HackathonDetailPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="max-w-5xl mx-auto px-3 sm:px-6 pt-24 pb-16 font-mono"
+        className="mx-auto w-full min-w-0 max-w-5xl overflow-x-hidden px-3 pb-16 pt-24 font-geist text-neutral-300 sm:px-6"
       >
         {/* ── 1. Back + Status Row ────────────────────────────── */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <Link
             to="/hackathons"
             className="text-xs text-[#B0B3B8] hover:text-[#F25C05] transition-colors"
@@ -1074,7 +1086,10 @@ export default function HackathonDetailPage() {
           </div>
         </div>
 
-        {/* ── 2. Header Card ──────────────────────────────────── */}
+        <div className="overflow-hidden border border-white/[0.12] bg-transparent">
+          <div className="divide-y divide-white/[0.12]">
+            {/* ── 2. Header ───────────────────────────────────── */}
+            <div className="px-4 py-6 md:px-6 md:py-7">
         <AsciiBox title="HACKATHON">
           {/* Infos + image side by side */}
           <div className="flex flex-col sm:flex-row gap-4">
@@ -1194,9 +1209,11 @@ export default function HackathonDetailPage() {
             )}
           </div>
         </AsciiBox>
+            </div>
 
         {/* ── 3. Grid ─────────────────────────────────────────── */}
-        <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 mt-6">
+            <div className="min-w-0 px-4 py-6 md:px-6 md:py-7">
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-3 lg:gap-8">
           {/* ── Rules (mobile: 1st, desktop: sidebar) ────────── */}
           <div className="order-1 lg:order-none lg:col-start-3 lg:row-start-1">
             <AsciiBox title="TL;DR">
@@ -1222,61 +1239,8 @@ export default function HackathonDetailPage() {
             </AsciiBox>
           </div>
 
-          {/* ── Milestones (sidebar, between TL;DR and Investors) ── */}
-          {hackathon.milestones && hackathon.milestones.length > 0 && (
-            <div className="order-1 lg:order-none lg:col-start-3 lg:row-start-2">
-              <AsciiBox title="MILESTONES">
-                <div className="space-y-2">
-                  {hackathon.milestones
-                    .sort((a, b) => a.milestone_order - b.milestone_order)
-                    .map((ms, i) => {
-                      const statusColor =
-                        ms.status === "paid" ? "text-[#22C55E]" :
-                        ms.status === "completed" ? "text-[#3B82F6]" :
-                        ms.status === "active" ? "text-[#F25C05]" :
-                        "text-[#555E6B]";
-                      const statusIcon =
-                        ms.status === "paid" ? "✓" :
-                        ms.status === "completed" ? "●" :
-                        ms.status === "active" ? "►" :
-                        "○";
-                      return (
-                        <div key={ms.id} className="flex items-start gap-2 text-xs">
-                          <span className={`${statusColor} shrink-0 mt-0.5 font-mono`}>{statusIcon}</span>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-baseline justify-between gap-2">
-                              <span className="text-[#F5F5F6] truncate">{ms.title}</span>
-                              <span className="text-[#F25C05] shrink-0 font-mono">${ms.amount_usdg.toLocaleString()}</span>
-                            </div>
-                            <div className="flex items-center gap-2 mt-0.5">
-                              <span className={`text-[10px] uppercase tracking-wider ${statusColor}`}>{ms.status}</span>
-                              {ms.deadline && (
-                                <span className="text-[10px] text-[#555E6B]">
-                                  {new Date(ms.deadline).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                                </span>
-                              )}
-                              {ms.paid_to && (
-                                <span className="text-[10px] text-[#22C55E]">→ @{ms.paid_to}</span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-                {/* Total */}
-                <div className="mt-3 pt-2 border-t border-[#2A3040] flex justify-between text-[10px]">
-                  <span className="text-[#A0A3A9]">TOTAL</span>
-                  <span className="text-[#F25C05] font-mono">
-                    ${hackathon.milestones.reduce((s, m) => s + m.amount_usdg, 0).toLocaleString()} USDG
-                  </span>
-                </div>
-              </AsciiBox>
-            </div>
-          )}
-
           {/* ── Main column ───────────────────────────────────── */}
-          <div className="lg:col-span-2 lg:row-span-3 space-y-6 order-2 lg:order-none">
+          <div className="order-2 min-w-0 space-y-6 lg:order-none lg:col-span-2 lg:row-span-2">
 
             {/* ── Decision Market (tabbed: Live / Previous) ──── */}
             <DecisionMarketSection
@@ -1699,7 +1663,7 @@ export default function HackathonDetailPage() {
           </div>
 
           {/* ── Investors (token holders, mobile: last, desktop: sidebar) ── */}
-          <div className="order-3 lg:order-none lg:col-start-3 lg:row-start-2">
+          <div className="order-3 min-w-0 lg:order-none lg:col-start-3 lg:row-start-2">
               <AsciiBox title="INVESTORS" titleColor="green">
                 {!tokenAddress ? (
                   <p className="text-xs text-[#A0A3A9] text-center py-4">
@@ -1772,6 +1736,9 @@ export default function HackathonDetailPage() {
                   </p>
                 )}
               </AsciiBox>
+          </div>
+        </div>
+            </div>
           </div>
         </div>
       </motion.div>

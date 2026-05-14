@@ -115,6 +115,7 @@ export default {
         vcr: ["VCR OSD Mono", "monospace"],
         francy: ["Francy", "sans-serif"],
         satoshi: ["Satoshi", "sans-serif"],
+        newsreader: ["Newsreader", "Georgia", "serif"],
       },
       boxShadow: {
         underline: "0px 2px 0px 0px rgba(188,254,143,1)",
@@ -258,6 +259,10 @@ export default {
           "0%": { opacity: 0, transform: "translateX(10%)" },
           "100%": { opacity: 1, transform: "translateX(0%)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "opacity-in": "opacity-in 0.6s ease-in-out forwards",
@@ -281,6 +286,7 @@ export default {
         "looped-video": "looped-video 7.04s ease-in-out infinite",
         "slide-exit-left": "slide-exit-left 0.5s ease-in-out forwards",
         "slide-entrance-left": "slide-entrance-left 0.5s ease-in-out forwards",
+        marquee: "marquee 38s linear infinite",
       },
     },
   },
