@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate, useSearchParams, Link, useOutletContext } from "react-router-dom";
-import { Search, Loader2, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { IdeaCard, ideaCategories, Idea } from "@/components/Ideas";
+import { FundIdeaLabel } from "@/components/Ideas/FundIdeaLabel";
+import { IdeaFundingMeter } from "@/components/Ideas/IdeaFundingMeter";
 import { toggleIdeaVote } from "@/components/Ideas/feedVoteUtils";
 import { compareDemosByFundingCloseness, DEMO_FEED_IDEAS, fundingGoalRatio, isDemoIdeaId } from "@/data/demoFeedIdeas";
 import { SEO } from "@/components/SEO";
@@ -125,30 +127,18 @@ export default function IdeasPage() {
       />
 
       <div className="animate-ideas-content-in">
-        <header className="mb-8 md:mb-10">
-          <p className="font-geist-mono text-[11px] uppercase tracking-[0.3em] text-orange-400/90">Feed</p>
-          <h1 className="mt-3 font-satoshi text-[28px] font-semibold tracking-tight text-white sm:text-[32px] md:text-[34px]">Ideas</h1>
-          <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-neutral-500 font-geist sm:text-[14px]">
-            Closest-to-goal spotlight above; the same ideas stay in the feed so nothing feels hidden. Demo ideas open as full detail pages.
-          </p>
-        </header>
-
         {closestIdeas.length > 0 && !ideasData.isLoadingIdeas && !(filteredDemos.length === 0 && filteredLive.length === 0) && (
-          <section className="mb-8 md:mb-10" aria-labelledby="closest-goal-heading">
-            <div className="mb-4 flex items-start justify-between gap-3 sm:gap-4">
-              <div className="flex min-w-0 items-start gap-3 sm:gap-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none border border-emerald-500/25 bg-emerald-500/[0.08] sm:h-10 sm:w-10">
-                  <TrendingUp className="h-4 w-4 text-emerald-400 sm:h-[18px] sm:w-[18px]" strokeWidth={2} />
-                </div>
-                <div className="min-w-0 pt-0.5">
-                  <h2 id="closest-goal-heading" className="font-satoshi text-[17px] font-semibold tracking-tight text-white sm:text-[19px]">
-                    Closest to funding goal
-                  </h2>
-                  <p className="mt-1 text-[12px] leading-relaxed text-neutral-500 font-geist sm:text-[13px]">
-                    Almost there — back these ideas now.
-                  </p>
-                </div>
-              </div>
+          <section className="mb-8 md:mb-10" aria-labelledby="hot-ideas-heading">
+            <div className="mb-4 flex items-center justify-between gap-3 sm:gap-4">
+              <h2
+                id="hot-ideas-heading"
+                className="flex min-w-0 items-center gap-2 font-satoshi text-[17px] font-semibold tracking-tight text-white sm:text-[19px]"
+              >
+                <span className="text-lg leading-none sm:text-xl" aria-hidden>
+                  🔥
+                </span>
+                Hot Ideas
+              </h2>
               <div className="flex shrink-0 gap-1 md:hidden">
                 <button
                   type="button"
@@ -176,7 +166,8 @@ export default function IdeasPage() {
               {closestIdeas.map((spotIdea, idx) => {
                 const goal = spotIdea.estimatedPrice ?? 0;
                 const raised = spotIdea.raisedAmount ?? 0;
-                const pct = goal > 0 ? Math.min(100, Math.round(fundingGoalRatio(spotIdea) * 100)) : 0;
+                const ratio = fundingGoalRatio(spotIdea);
+                const pct = goal > 0 ? Math.min(100, Math.round(ratio * 100)) : 0;
                 return (
                   <motion.article
                     key={spotIdea.id}
@@ -192,20 +183,20 @@ export default function IdeasPage() {
                         handleIdeaClick(spotIdea);
                       }
                     }}
-                    className="group flex w-[min(100%,340px)] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-none bg-black text-left shadow-none transition-opacity duration-200 hover:opacity-95 md:w-auto"
+                    className="group flex w-[min(100%,280px)] shrink-0 cursor-pointer snap-start flex-col overflow-hidden rounded-lg border border-white/12 bg-transparent text-left shadow-none transition-all duration-200 hover:border-white/28 hover:bg-black/60 md:w-auto"
                   >
-                    <div className="relative aspect-[16/11] min-h-[140px] overflow-hidden bg-black sm:aspect-[16/10]">
+                    <div className="relative aspect-[5/4] min-h-[132px] overflow-hidden bg-black/40 sm:min-h-[140px]">
                       <img
                         src={spotIdea.generatedImageUrl || FEATURE_FALLBACK_IMAGE}
                         alt=""
                         className="block h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
                       />
                       <div
-                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/90 to-transparent"
+                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-200 group-hover:from-black group-hover:via-black/80"
                         aria-hidden
                       />
-                      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-2 p-3 sm:p-4">
-                        <h3 className="line-clamp-2 max-w-[90%] font-satoshi text-[15px] font-semibold leading-snug tracking-tight text-white drop-shadow-sm sm:text-[16px]">
+                      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-2 p-2.5 sm:p-3">
+                        <h3 className="line-clamp-2 max-w-[90%] font-satoshi text-[14px] font-semibold leading-snug tracking-tight text-white drop-shadow-sm sm:text-[15px]">
                           {spotIdea.title}
                         </h3>
                         <span className="shrink-0 rounded-none border border-violet-500/35 bg-violet-500/15 px-1.5 py-0.5 font-geist text-[9px] font-medium uppercase tracking-wider text-violet-200/95">
@@ -213,20 +204,17 @@ export default function IdeasPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="border-t border-white/[0.06] bg-black px-3 py-3 sm:px-4 sm:py-3.5">
-                      <div className="h-1 overflow-hidden rounded-none bg-white/[0.08]">
-                        <motion.div
-                          className="h-full rounded-none bg-gradient-to-r from-emerald-600 to-emerald-400"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${pct}%` }}
-                          transition={{ duration: 0.75, delay: 0.06 + idx * 0.05, ease: easeOut }}
-                        />
-                      </div>
-                      <div className="mt-2 flex items-baseline justify-between gap-2 font-geist-mono text-[10px] tabular-nums text-neutral-500 sm:text-[11px]">
-                        <span className="text-emerald-400/95">{pct}%</span>
-                        <span>
-                          $ {raised.toLocaleString("en-US")} / {goal.toLocaleString("en-US")}
-                        </span>
+                    <div className="border-t border-white/[0.06] bg-transparent px-2.5 py-2.5 transition-colors duration-200 group-hover:bg-black/80 sm:px-3 sm:py-3">
+                      <IdeaFundingMeter
+                        goal={goal}
+                        raised={raised}
+                        ratio={ratio}
+                        variant="hot"
+                        animateBar
+                        animateDelay={0.06 + idx * 0.05}
+                      />
+                      <div className="mt-3 flex justify-center sm:justify-end">
+                        <FundIdeaLabel />
                       </div>
                     </div>
                   </motion.article>
@@ -305,7 +293,7 @@ export default function IdeasPage() {
           <div className="mx-auto w-full">
             <div className="grid grid-cols-1">
               {filteredDemos.map((idea) => (
-                <div key={idea.id} className="bg-transparent hover:bg-white/[0.02]">
+                <div key={idea.id} className="mb-3 last:mb-0">
                   <IdeaCard
                     idea={idea}
                     density="condensed"
@@ -323,7 +311,7 @@ export default function IdeasPage() {
                 </div>
               )}
               {filteredLive.map((idea) => (
-                <div key={idea.id} className="bg-transparent hover:bg-white/[0.02]">
+                <div key={idea.id} className="mb-3 last:mb-0">
                   <IdeaCard
                     idea={idea}
                     density="condensed"

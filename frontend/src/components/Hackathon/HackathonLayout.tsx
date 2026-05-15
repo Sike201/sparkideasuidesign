@@ -6,6 +6,7 @@ import { backendSparkApi } from "@/data/api/backendSparkApi";
 import { generateCodeVerifier, generateCodeChallenge } from "@/components/Ideas/utils";
 import { ROUTES } from "@/utils/routes";
 import Aurora from "@/components/Aurora";
+import { SparkLogoLink } from "@/components/SparkLogoLink";
 
 const AURORA_STOPS = ["#431407", "#ea580c", "#fdba74"];
 
@@ -134,12 +135,7 @@ export default function HackathonLayout({ children }: HackathonLayoutProps) {
 
       <header className="fixed top-0 z-50 w-full border-b border-white/[0.06] bg-black/75 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-6 md:px-10">
-          <Link
-            to={ROUTES.LANDING_PAGE}
-            className="shrink-0 opacity-90 transition-opacity hover:opacity-100"
-          >
-            <img src="/sparklogo.png" alt="Spark" className="h-6 w-auto md:h-7" />
-          </Link>
+          <SparkLogoLink />
 
           <nav className="flex min-w-0 flex-1 justify-center gap-4 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-6 md:px-4 [&::-webkit-scrollbar]:hidden">
             {ecosystemNav.map((link) => (

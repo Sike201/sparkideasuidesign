@@ -5,6 +5,7 @@ import { UserProfile, ViewType } from "./types";
 import { DAILY_VOTE_LIMIT } from "./utils";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
 import { ROUTES } from "@/utils/routes";
+import { SparkLogoLink } from "@/components/SparkLogoLink";
 
 interface IdeasHeaderProps {
   currentView: ViewType;
@@ -172,11 +173,11 @@ export function IdeasHeader({
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-black/75 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-6 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-4 md:px-12">
-            <div className="hidden md:block" aria-hidden />
+        <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-6 md:px-12">
+            <SparkLogoLink />
 
             {/* Navigation — centered on desktop */}
-            <nav className="hidden items-center justify-center gap-5 md:flex">
+            <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
@@ -233,7 +234,7 @@ export function IdeasHeader({
                 onClick={onOpenSubmitModal}
                 className="bg-orange-500 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-orange-400 font-geist"
               >
-                Post
+                Post idea
               </button>
 
               {/* Profile Dropdown */}

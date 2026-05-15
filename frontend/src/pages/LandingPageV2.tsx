@@ -6,6 +6,7 @@ import { SEO } from "@/components/SEO";
 import { CONTRACT_ADDRESS } from "@/utils/sparkUtils";
 import { ROUTES } from "@/utils/routes";
 import Aurora from "@/components/Aurora";
+import { SparkLogoLink } from "@/components/SparkLogoLink";
 
 const ORANGE = "#f97316";
 
@@ -122,12 +123,7 @@ export default function LandingPageV2() {
           transition={{ duration: 0.45, ease: easeOut }}
           className="mx-auto flex max-w-3xl items-center justify-between px-6 pt-10 font-geist text-[13px]"
         >
-          <Link
-            to={ROUTES.LANDING_PAGE}
-            className="text-neutral-500 transition-colors duration-300 hover:text-white"
-          >
-            Spark
-          </Link>
+          <SparkLogoLink />
           <nav className="flex flex-wrap justify-end gap-x-6 gap-y-2">
             <Link to={ROUTES.IDEAS} className="text-neutral-500 transition-colors duration-300 hover:text-white">
               Ideas
@@ -149,79 +145,49 @@ export default function LandingPageV2() {
           </nav>
         </motion.header>
 
-        <main className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center px-6 pb-24 pt-16 md:min-h-[calc(100vh-10rem)] md:pt-8">
-          <motion.div variants={stagger} initial="hidden" animate="show" className="flex w-full flex-col">
-            <motion.p variants={fadeUp} className="font-geist-mono text-[11px] uppercase tracking-[0.32em]" style={{ color: ORANGE }}>
-              Idea launchpad on Solana
-            </motion.p>
-
+        <main className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-3xl flex-col justify-center px-6 pb-24 pt-16 text-center md:min-h-[calc(100vh-10rem)] md:pt-8">
+          <motion.div variants={stagger} initial="hidden" animate="show" className="mx-auto flex w-full max-w-2xl flex-col items-center">
             <motion.h1
               variants={fadeUp}
-              className="mt-8 font-satoshi text-[clamp(2rem,5.5vw,3.25rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-white"
+              className="font-satoshi text-[clamp(2rem,5.5vw,3.25rem)] font-semibold leading-[1.12] tracking-[-0.03em] text-white"
             >
-              Fund the idea first.
+              Post an idea.
               <br />
-              <span style={{ color: ORANGE }}>Find the builder second.</span>
+              <span style={{ color: ORANGE }}>Get funded for it.</span>
             </motion.h1>
 
-            <motion.p variants={fadeUp} className="mt-8 max-w-xl text-[15px] leading-relaxed text-neutral-500 font-geist">
-              On{" "}
-              <a
-                href="https://justspark.fun/"
-                className="text-neutral-300 underline-offset-4 transition-colors duration-300 hover:text-orange-400 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                JustSpark
-              </a>
-              , ideas raise in USDC and markets pick who builds—not a committee. Ideators earn from trading fees; builders earn the winning proposal; funders can recover capital if the raise fails or no builder wins.
+            <motion.p variants={fadeUp} className="mt-8 max-w-lg text-[15px] leading-relaxed text-neutral-500 font-geist">
+              Share what you want built, raise in USDC, and earn when the market backs you—not a committee picking winners.
             </motion.p>
 
-            <motion.div variants={fadeUp} className="mt-14 flex flex-wrap items-center gap-3">
+            <motion.div variants={fadeUp} className="mt-14 flex flex-wrap items-center justify-center gap-3">
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 450, damping: 22 }}>
                 <Link
                   to={ROUTES.IDEAS}
-                  className="inline-flex min-h-[44px] items-center justify-center bg-orange-500 px-8 py-3 text-[13px] font-semibold text-black transition-colors duration-300 hover:bg-orange-400 font-geist"
+                  className="group relative inline-flex min-h-[44px] items-center justify-center overflow-hidden border border-orange-500 px-8 py-3 font-geist text-[13px] font-semibold text-orange-400 transition-colors duration-300 hover:text-black"
                 >
-                  Explore ideas
+                  <span
+                    className="absolute inset-0 origin-bottom scale-y-0 bg-orange-500 transition-transform duration-300 ease-out group-hover:scale-y-100"
+                    aria-hidden
+                  />
+                  <span className="relative z-10">Post your idea</span>
                 </Link>
-          </motion.div>
+              </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 450, damping: 22 }}>
-                <a
-                  href="https://t.me/sparkdotfun"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center justify-center px-5 py-3 text-[12px] font-medium text-neutral-300 transition-colors duration-300 hover:text-white font-geist"
+                <Link
+                  to={ROUTES.HACKATHONS}
+                  className="group relative inline-flex min-h-[44px] items-center justify-center overflow-hidden border border-white/20 px-8 py-3 font-geist text-[13px] font-medium text-neutral-300 transition-colors duration-300 hover:border-white/40 hover:text-white"
                 >
-                  Build with us
-                </a>
+                  <span
+                    className="absolute inset-0 origin-bottom scale-y-0 bg-white/10 transition-transform duration-300 ease-out group-hover:scale-y-100"
+                    aria-hidden
+                  />
+                  <span className="relative z-10">Hackathons</span>
+                </Link>
               </motion.div>
             </motion.div>
 
-            <motion.p
-              variants={fadeUp}
-              className="mt-16 text-[12px] leading-relaxed text-neutral-600 font-geist"
-            >
-              New here?{" "}
-              <Link to={ROUTES.EXPLANATION} className="text-neutral-400 underline-offset-4 transition-colors duration-300 hover:text-orange-400 hover:underline">
-                How it works
-                  </Link>
-              {" · "}
-              <Link to={ROUTES.FUNDED} className="text-neutral-400 underline-offset-4 transition-colors duration-300 hover:text-orange-400 hover:underline">
-                Funded ideas
-            </Link>
-              {" · "}
-              <a
-                href="https://justspark.fun/ideas"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                className="text-neutral-400 underline-offset-4 transition-colors duration-300 hover:text-orange-400 hover:underline"
-              >
-                Live ideas
-              </a>
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="w-full">
+            <motion.div variants={fadeUp} className="mt-16 w-full">
               <PartnerMarquee />
             </motion.div>
           </motion.div>

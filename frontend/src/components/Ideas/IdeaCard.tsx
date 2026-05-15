@@ -4,6 +4,8 @@ import { Idea } from "./types";
 import { formatTimeAgo } from "./utils";
 import React from "react";
 import { fundingGoalRatio, isDemoIdeaId } from "@/data/demoFeedIdeas";
+import { IdeaFundingMeter } from "./IdeaFundingMeter";
+import { fundingBarClass, fundingPctTextClass, getFundingTier } from "./fundingTier";
 
 export type IdeaCardDensity = "default" | "condensed";
 
@@ -23,9 +25,8 @@ export function IdeaCard({ idea, onUpvote, onDownvote, onClick, density = "defau
   const preview = isDemoIdeaId(idea.id);
   const goal = idea.estimatedPrice ?? 0;
   const raised = idea.raisedAmount ?? 0;
-  const progressPct = !isFunded && goal > 0 ? Math.min(100, Math.round(fundingGoalRatio(idea) * 100)) : null;
-
   if (density === "condensed") {
+    const fundingRatio = fundingGoalRatio(idea);
     return (
       <CondensedIdeaCard
         idea={idea}
@@ -35,13 +36,17 @@ export function IdeaCard({ idea, onUpvote, onDownvote, onClick, density = "defau
         preview={preview}
         goal={goal}
         raised={raised}
-        progressPct={progressPct}
+        fundingRatio={fundingRatio}
         onUpvote={onUpvote}
         onDownvote={onDownvote}
         onClick={onClick}
       />
     );
   }
+
+  const fundingRatio = fundingGoalRatio(idea);
+  const progressPct = !isFunded && goal > 0 ? Math.min(100, Math.round(fundingRatio * 100)) : null;
+  const fundingTier = getFundingTier(fundingRatio);
 
   return (
     <DefaultIdeaCard
@@ -53,6 +58,7 @@ export function IdeaCard({ idea, onUpvote, onDownvote, onClick, density = "defau
       goal={goal}
       raised={raised}
       progressPct={progressPct}
+      fundingTier={fundingTier}
       onUpvote={onUpvote}
       onDownvote={onDownvote}
       onClick={onClick}
@@ -68,7 +74,7 @@ function CondensedIdeaCard({
   preview,
   goal,
   raised,
-  progressPct,
+  fundingRatio,
   onUpvote,
   onDownvote,
   onClick,
@@ -80,11 +86,12 @@ function CondensedIdeaCard({
   preview: boolean;
   goal: number;
   raised: number;
-  progressPct: number | null;
+  fundingRatio: number;
   onUpvote: (id: string) => void;
   onDownvote: (id: string) => void;
   onClick: () => void;
 }) {
+  const showFunding = !isFunded && !isRefunded && goal > 0;
   return (
     <article
       role="button"
@@ -96,79 +103,84 @@ function CondensedIdeaCard({
           onClick();
         }
       }}
-      className={`group cursor-pointer px-3 py-2.5 text-left transition-colors sm:px-3.5 sm:py-3 ${
-        isRefunded ? "opacity-50" : "hover:bg-white/[0.04]"
+      className={`group cursor-pointer border border-white/10 bg-transparent px-3.5 py-3 text-left transition-all duration-200 sm:px-4 sm:py-3.5 ${
+        isRefunded ? "opacity-50" : "hover:border-white/25 hover:bg-black/75"
       }`}
     >
-      <div className="flex gap-2.5">
+      <div className="flex gap-2.5 sm:gap-3">
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0 text-[10px] text-neutral-500 font-geist">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-neutral-400 font-geist">
             <Link
               to={`/profile/${idea.authorUsername}`}
               onClick={(e) => e.stopPropagation()}
-              className="font-medium text-neutral-200 hover:text-orange-400"
+              className="font-medium text-neutral-300 hover:text-orange-400"
             >
               @{idea.authorUsername}
             </Link>
-            <span className="text-neutral-700">·</span>
+            <span className="text-neutral-600">·</span>
             <time dateTime={idea.createdAt}>{formatTimeAgo(idea.createdAt)}</time>
             {preview && (
               <>
-                <span className="text-neutral-700">·</span>
-                <span className="font-geist-mono uppercase tracking-wider text-orange-400/85">Preview</span>
+                <span className="text-neutral-600">·</span>
+                <span className="font-geist-mono uppercase tracking-wider text-orange-400/90">Preview</span>
               </>
             )}
-            <span className="text-neutral-700">·</span>
-            <span className="truncate text-neutral-600">{idea.category}</span>
+            <span className="text-neutral-600">·</span>
+            <span className="truncate text-neutral-500">{idea.category}</span>
+            {isFunded && (
+              <>
+                <span className="text-neutral-600">·</span>
+                <span className="font-geist-mono text-[10px] uppercase tracking-wider text-orange-400/90">
+                  Funded
+                </span>
+              </>
+            )}
+            {isRefunded && (
+              <>
+                <span className="text-neutral-600">·</span>
+                <span className="font-geist-mono text-[10px] uppercase tracking-wider text-red-400/90">
+                  Refunded
+                </span>
+              </>
+            )}
           </div>
 
-          <h3 className="mt-0.5 font-satoshi text-[13px] font-semibold leading-snug tracking-tight text-white line-clamp-2 group-hover:text-orange-50">
+          <h3 className="mt-1.5 font-satoshi text-[14px] font-semibold leading-snug tracking-tight text-white line-clamp-2 group-hover:text-orange-50 sm:text-[15px]">
             {idea.title}
           </h3>
 
-          <div className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-neutral-500 font-geist">
-            <SimpleMarkdownRenderer text={idea.description} />
+          <div className="mt-1.5 line-clamp-3 text-[12px] leading-[1.55] text-neutral-300 font-geist sm:text-[13px] sm:leading-[1.6]">
+            <SimpleMarkdownRenderer text={idea.description} emphasisClassName="text-neutral-200" />
           </div>
 
-          {(progressPct != null && !isFunded) || (isFunded && idea.raisedAmount != null && idea.raisedAmount > 0) ? (
-            <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-2">
-              {progressPct != null && !isFunded && (
-                <>
-                  <div className="h-1 min-w-[2.5rem] max-w-[min(140px,45%)] flex-1 overflow-hidden rounded-none bg-white/[0.08]">
-                    <div
-                      className="h-full rounded-none bg-orange-500/90"
-                      style={{ width: `${progressPct}%` }}
-                    />
-                  </div>
-                  <span className="font-geist-mono text-[10px] tabular-nums text-neutral-500">
-                    {progressPct}% · ${raised.toLocaleString()} / ${goal.toLocaleString()}
-                  </span>
-                </>
-              )}
-              {isFunded && idea.raisedAmount != null && idea.raisedAmount > 0 && (
-                <span className="text-[10px] text-orange-300/90">Raised ${idea.raisedAmount.toLocaleString()}</span>
-              )}
-            </div>
-          ) : null}
+          {showFunding && (
+            <IdeaFundingMeter
+              goal={goal}
+              raised={raised}
+              ratio={fundingRatio}
+              variant="feed"
+              className="mt-2"
+            />
+          )}
 
-          <div className="mt-1.5 flex items-center justify-between gap-2">
-            <div className="flex min-w-0 flex-wrap items-center gap-x-2 text-[10px] text-neutral-600 font-geist">
-              {idea.commentsCount > 0 && (
-                <span className="inline-flex shrink-0 items-center gap-0.5">
-                  <MessageSquare className="h-3 w-3 opacity-60" strokeWidth={1.5} />
-                  {idea.commentsCount}
-                </span>
-              )}
-              {isFunded && (
-                <span className="font-geist-mono uppercase tracking-wider text-orange-300/75">Funded</span>
-              )}
-              {isRefunded && (
-                <span className="font-geist-mono uppercase tracking-wider text-red-400/80">Refunded</span>
-              )}
-            </div>
+          {isFunded && raised > 0 && (
+            <p className="mt-2 font-geist-mono text-[10px] text-orange-400/90 sm:text-[11px]">
+              Raised ${raised.toLocaleString()}
+            </p>
+          )}
 
+          {idea.commentsCount > 0 && (
+            <div className="mt-2.5 text-[11px] text-neutral-500 font-geist">
+              <span className="inline-flex items-center gap-1">
+                <MessageSquare className="h-3.5 w-3.5 opacity-70" strokeWidth={1.5} />
+                {idea.commentsCount}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-3 flex items-center gap-2">
             <div
-              className="inline-flex shrink-0 items-center gap-0.5 rounded-none border border-white/[0.06] bg-black/40 p-0.5"
+              className="inline-flex shrink-0 items-center gap-0.5 border border-white/20 bg-black/60 p-0.5"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -213,8 +225,8 @@ function CondensedIdeaCard({
         </div>
 
         {idea.generatedImageUrl ? (
-          <div className="hidden h-12 w-12 shrink-0 overflow-hidden rounded-none sm:block">
-            <img src={idea.generatedImageUrl} alt="" className="h-full w-full object-cover opacity-90" />
+          <div className="h-[4.75rem] w-[4.75rem] shrink-0 overflow-hidden rounded-none border border-white/15 sm:h-[5.25rem] sm:w-[5.25rem]">
+            <img src={idea.generatedImageUrl} alt="" className="h-full w-full object-cover opacity-95" />
           </div>
         ) : null}
       </div>
@@ -231,6 +243,7 @@ function DefaultIdeaCard({
   goal,
   raised,
   progressPct,
+  fundingTier,
   onUpvote,
   onDownvote,
   onClick,
@@ -243,10 +256,13 @@ function DefaultIdeaCard({
   goal: number;
   raised: number;
   progressPct: number | null;
+  fundingTier: ReturnType<typeof getFundingTier>;
   onUpvote: (id: string) => void;
   onDownvote: (id: string) => void;
   onClick: () => void;
 }) {
+  const barClass = fundingBarClass(fundingTier);
+  const pctClass = fundingPctTextClass(fundingTier);
   return (
     <article
       role="button"
@@ -308,13 +324,13 @@ function DefaultIdeaCard({
             <div className="mt-4 max-w-sm">
               <div className="mb-1.5 flex items-baseline justify-between gap-3 font-geist-mono text-[10px] uppercase tracking-wider text-neutral-600">
                 <span>Funding</span>
-                <span className="tabular-nums text-neutral-500">
+                <span className={`tabular-nums ${pctClass}`}>
                   {progressPct}% · ${raised.toLocaleString()} / ${goal.toLocaleString()}
                 </span>
               </div>
               <div className="h-0.5 overflow-hidden rounded-none bg-white/[0.06]">
                 <div
-                  className="h-full rounded-none bg-gradient-to-r from-orange-600/90 to-orange-400/80"
+                  className={`h-full rounded-none ${barClass}`}
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -410,7 +426,13 @@ function DefaultIdeaCard({
   );
 }
 
-function SimpleMarkdownRenderer({ text }: { text: string }) {
+function SimpleMarkdownRenderer({
+  text,
+  emphasisClassName = "text-neutral-400",
+}: {
+  text: string;
+  emphasisClassName?: string;
+}) {
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
   let keyCounter = 0;
@@ -421,7 +443,7 @@ function SimpleMarkdownRenderer({ text }: { text: string }) {
       parts.push(text.substring(lastIndex, match.index));
     }
     parts.push(
-      <strong key={`bold-${keyCounter++}`} className="font-medium text-neutral-400">
+      <strong key={`bold-${keyCounter++}`} className={`font-medium ${emphasisClassName}`}>
         {match[1] || match[2]}
       </strong>,
     );

@@ -203,19 +203,24 @@ export default function FundedPage() {
 
   const isLoading = ideasData.isLoadingIdeas;
 
-  const committedDisplay = useMemo(() => {
-    const sum = MOCK_FUNDED_ACTIVE.reduce((s, p) => s + p.raisedUsd, 0);
-    if (sum >= 1e6) return `$${(sum / 1e6).toFixed(1)}M`;
-    return fmtMoney(sum);
-  }, []);
+  const completedRaisedTotal = useMemo(() => {
+    const mock = MOCK_FUNDED_GRAVEYARD.reduce((s, p) => s + p.raisedUsd, 0);
+    const live = graveyardIdeas.reduce((s, i) => s + (i.raisedAmount || 0), 0);
+    return mock + live;
+  }, [graveyardIdeas]);
+
+  const activeRaisesTotal = MOCK_FUNDED_ACTIVE.length + fundedIdeas.length;
+  const completedRaisesTotal = MOCK_FUNDED_GRAVEYARD.length + graveyardIdeas.length;
+
+  const completedRaisedDisplay = useMemo(() => {
+    if (completedRaisedTotal >= 1e9) return `$${(completedRaisedTotal / 1e9).toFixed(2)}B`;
+    if (completedRaisedTotal >= 1e6) return `$${(completedRaisedTotal / 1e6).toFixed(1)}M`;
+    return fmtMoney(completedRaisedTotal);
+  }, [completedRaisedTotal]);
 
   return (
     <IdeasLayout auth={auth} ideasData={ideasData}>
-      <SEO
-        title="Funded"
-        description="Spark portfolio — active launches, live registry, and archived programs."
-        path="/funded"
-      />
+      <SEO title="Funded" description="Funded ideas on Spark." path="/funded" />
 
       <div className="relative -mx-6 min-h-[calc(100vh-8rem)] md:-mx-10">
         <div className="pointer-events-none fixed inset-0 z-0 bg-black">
@@ -229,40 +234,18 @@ export default function FundedPage() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: easeOut }}
-            className="mb-10 border-b border-white/[0.07] pb-10 md:mb-14 md:pb-12"
+            className="mb-12 md:mb-16"
           >
-            <p className="font-geist-mono text-[11px] uppercase tracking-[0.32em] text-orange-400/90">Portfolio</p>
-            <h1 className="mt-3 font-satoshi text-[clamp(1.75rem,4vw,2.35rem)] font-semibold tracking-tight text-white">
-              Funded
-            </h1>
-            <p className="mt-4 max-w-2xl font-geist text-[13px] leading-relaxed text-neutral-500">
-              Mandates that cleared Spark raise mechanics — structured like an institutional sleeve, readable like a
-              venture portfolio. Figures below include curated design previews alongside the live registry.
+            <p className="font-geist-mono text-[clamp(2.25rem,7vw,3.75rem)] font-semibold leading-none tabular-nums tracking-tight text-white">
+              {completedRaisedDisplay}
             </p>
-            <dl className="mt-8 grid max-w-lg grid-cols-2 gap-6 border-t border-white/[0.06] pt-8 font-geist">
-              <div>
-                <dt className="text-[10px] uppercase tracking-[0.22em] text-neutral-600">Preview sleeve</dt>
-                <dd className="mt-1 font-geist-mono text-lg tabular-nums text-white">{committedDisplay}</dd>
-                <dd className="mt-0.5 text-[11px] text-neutral-600">committed (illustrative)</dd>
-              </div>
-              <div>
-                <dt className="text-[10px] uppercase tracking-[0.22em] text-neutral-600">Active cards</dt>
-                <dd className="mt-1 font-geist-mono text-lg tabular-nums text-white">{MOCK_FUNDED_ACTIVE.length}</dd>
-                <dd className="mt-0.5 text-[11px] text-neutral-600">design previews</dd>
-              </div>
-            </dl>
+            <p className="mt-4 font-geist-mono text-[13px] tabular-nums text-neutral-500 sm:text-[14px]">
+              {activeRaisesTotal} active · {completedRaisesTotal} completed
+            </p>
           </motion.header>
 
-          <section className="mb-16 md:mb-20">
-            <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <h2 className="font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">
-                  Featured launches
-                </h2>
-                <p className="mt-1 font-geist text-[12px] text-neutral-600">Select a card to open the investment memo.</p>
-              </div>
-            </div>
-
+          <section className="mb-14 md:mb-16">
+            <h2 className="mb-5 font-satoshi text-[15px] font-semibold tracking-tight text-white">Active</h2>
             <motion.div
               className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
               variants={stagger}
@@ -275,21 +258,13 @@ export default function FundedPage() {
             </motion.div>
           </section>
 
-          <section className="mb-16 md:mb-20">
-            <h2 className="mb-1 font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">Live registry</h2>
-            <p className="mb-6 max-w-xl font-geist text-[12px] text-neutral-600">
-              On-chain ideas with minted exposure — pulled from your connected data source.
-            </p>
+          <section className="mb-14 md:mb-16">
+            <h2 className="mb-5 font-satoshi text-[15px] font-semibold tracking-tight text-white">Live</h2>
             {isLoading ? (
-              <div className="flex items-center gap-2 py-12 text-neutral-500">
+              <div className="flex items-center gap-2 py-8 text-neutral-500">
                 <Loader2 className="h-5 w-5 animate-spin text-orange-500" />
-                <span className="font-geist text-[13px]">Loading registry…</span>
               </div>
-            ) : fundedIdeas.length === 0 ? (
-              <p className="border-t border-white/[0.06] py-10 font-geist text-[13px] text-neutral-600">
-                No live funded ideas in this environment yet.
-              </p>
-            ) : (
+            ) : fundedIdeas.length > 0 ? (
               <div className="border-t border-white/[0.06]">
                 {fundedIdeas.map((idea) => (
                   <LiveFundedRow
@@ -304,17 +279,13 @@ export default function FundedPage() {
                   />
                 ))}
               </div>
-            )}
+            ) : null}
           </section>
 
           <section>
-            <h2 className="mb-1 font-geist-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500">Archive</h2>
-            <p className="mb-6 max-w-xl font-geist text-[12px] text-neutral-600">
-              Programs with concluded liquidity or redemption flows — design previews plus live vault-linked rows.
-            </p>
-
+            <h2 className="mb-5 font-satoshi text-[15px] font-semibold tracking-tight text-white">Completed</h2>
             <motion.div
-              className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
               variants={stagger}
               initial="hidden"
               whileInView="show"
@@ -328,14 +299,9 @@ export default function FundedPage() {
             {isLoading || isCheckingVaults ? (
               <div className="flex items-center gap-2 py-6 text-neutral-500">
                 <Loader2 className="h-5 w-5 animate-spin text-orange-500/80" />
-                <span className="font-geist text-[12px]">Checking vault state…</span>
               </div>
-            ) : graveyardIdeas.length === 0 ? null : (
-              <>
-                <h3 className="mb-3 font-geist-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600">
-                  Redemption-linked
-                </h3>
-                <div className="border-t border-white/[0.06]">
+            ) : graveyardIdeas.length > 0 ? (
+              <div className="border-t border-white/[0.06]">
                   {graveyardIdeas.map((idea) => {
                     const vault = vaultStates[idea.id];
                     const launchedAmount = idea.raisedAmount || 0;
@@ -365,17 +331,9 @@ export default function FundedPage() {
                       />
                     );
                   })}
-                </div>
-              </>
-            )}
+              </div>
+            ) : null}
           </section>
-
-          <p className="mt-16 border-t border-white/[0.06] pt-8 font-geist text-[11px] text-neutral-600">
-            Featured cards are visual design previews. Live rows reflect your deployment.{" "}
-            <Link to="/ideas" className="text-orange-400/90 underline-offset-4 hover:underline">
-              Back to ideas
-            </Link>
-          </p>
         </div>
       </div>
     </IdeasLayout>

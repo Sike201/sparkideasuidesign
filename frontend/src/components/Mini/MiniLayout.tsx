@@ -20,6 +20,7 @@ import MiniInstallPrompt from "./MiniInstallPrompt"
 import MiniNotificationsPrompt from "./MiniNotificationsPrompt"
 import MiniDailyQuiz from "./MiniDailyQuiz"
 import MiniPwaGate from "./MiniPwaGate"
+import { SparkLogoLink } from "@/components/SparkLogoLink"
 import { usePwaStandalone } from "@/hooks/usePwaStandalone"
 import { useMiniDepositGate } from "@/hooks/useMiniDepositGate"
 import { useMiniAuth } from "@/hooks/useMiniAuth"
@@ -102,11 +103,7 @@ export default function MiniLayout({ children, hideBottomNav = false, hideHeader
           round-trip to /m/me just to flip Main↔Bonus before a trade. */}
       {!hideHeader && (
         <header className="w-full max-w-md mx-auto px-4 pt-3 pb-2 flex items-center">
-          <img
-            src="/sparklogo.png"
-            alt="Spark"
-            className="h-7 w-auto"
-          />
+          <SparkLogoLink />
           <WalletSwitchPill />
         </header>
       )}
