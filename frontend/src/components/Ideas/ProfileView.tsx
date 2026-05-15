@@ -101,7 +101,7 @@ export function ProfileView({
   };
 
   return (
-    <div className="max-w-2xl mx-auto animate-fade-in">
+    <div className="max-w-2xl mx-auto animate-ideas-content-in">
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.06] mb-4">
           <User className="w-8 h-8 text-neutral-400" />

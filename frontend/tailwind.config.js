@@ -263,6 +263,11 @@ export default {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        // No blur — avoids milky flash vs duplicate global fade-in keyframes
+        "ideas-content-in": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "opacity-in": "opacity-in 0.6s ease-in-out forwards",
@@ -287,6 +292,7 @@ export default {
         "slide-exit-left": "slide-exit-left 0.5s ease-in-out forwards",
         "slide-entrance-left": "slide-entrance-left 0.5s ease-in-out forwards",
         marquee: "marquee 48s linear infinite",
+        "ideas-content-in": "ideas-content-in 0.35s ease-out both",
       },
     },
   },

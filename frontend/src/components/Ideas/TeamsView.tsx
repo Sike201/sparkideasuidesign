@@ -3,7 +3,7 @@ import { builderTeams, availabilityColors } from "./constants";
 
 export function TeamsView() {
   return (
-    <div className="max-w-6xl mx-auto animate-fade-in relative">
+    <div className="max-w-6xl mx-auto animate-ideas-content-in relative">
       {/* Coming Soon Overlay */}
       <div className="absolute inset-0 z-20 flex items-center justify-center">
         <div className="bg-neutral-900/90 backdrop-blur-sm border border-orange-500/20 rounded-2xl px-8 py-6 text-center shadow-2xl">

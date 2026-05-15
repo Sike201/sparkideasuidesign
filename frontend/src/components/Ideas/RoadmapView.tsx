@@ -2,7 +2,7 @@ import { Clock } from "lucide-react";
 
 export function RoadmapView() {
   return (
-    <div className="max-w-2xl mx-auto animate-fade-in text-center py-20">
+    <div className="max-w-2xl mx-auto animate-ideas-content-in text-center py-20">
       <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-neutral-900/50 border border-white/5 mb-6">
         <Clock className="w-8 h-8 text-neutral-500" />
       </div>

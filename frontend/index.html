@@ -2,6 +2,18 @@
 <html lang="en">
 
 <head>
+  <!-- Paint dark immediately (before CSS/JS) to avoid white flash on load/navigation -->
+  <style>
+    html {
+      background-color: #000000;
+      color-scheme: dark;
+    }
+    body,
+    #root {
+      background-color: #000000;
+      min-height: 100%;
+    }
+  </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PY4EH6W1PS"></script>
   <script>

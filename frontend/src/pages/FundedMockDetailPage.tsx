@@ -55,7 +55,7 @@ export default function FundedMockDetailPage() {
           </div>
         </div>
 
-        <div className="relative z-10 animate-fade-in">
+        <div className="relative z-10 animate-ideas-content-in">
           <Link
             to={ROUTES.FUNDED}
             className="mb-8 inline-flex items-center gap-2 font-geist text-[12px] text-neutral-500 transition-colors hover:text-white"

@@ -541,7 +541,7 @@ export function IdeaDetailView({
   };
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-ideas-content-in">
       {/* Back Button */}
       <button
         onClick={onBack}

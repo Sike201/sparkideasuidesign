@@ -73,7 +73,7 @@ export default function IdeaDetailPage() {
         />
       )}
       {ideasData.isLoadingIdeas ? (
-        <div className="flex items-center justify-center py-20">
+        <div className="flex min-h-[50vh] items-center justify-center bg-black py-20">
           <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
           <span className="ml-3 text-sm text-neutral-400">Loading idea...</span>
         </div>

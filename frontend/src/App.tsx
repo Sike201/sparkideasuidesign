@@ -90,26 +90,32 @@ function App() {
     return undefined; // No title for other pages
   };
 
+  const shell = (children: React.ReactNode) => (
+    <div className="relative min-h-dvh min-h-screen bg-black">
+      {children}
+    </div>
+  );
+
   if (isLandingPage || isIdeasPage || isPublicProfile || isHackathonSection || isMiniApp) {
     // Landing page, Ideas page, and Public Profile have their own layout
-    return (
+    return shell(
       <>
         <PwaUpdatePrompt />
         {/* <OnboardingModal /> */}
-        <ToastContainer />
+        <ToastContainer theme="dark" />
         <Outlet />
-      </>
+      </>,
     );
   }
 
   // All other pages use the Spark layout
-  return (
+  return shell(
     <SparkLayout pageTitle={getPageTitle()} showFooter={false}>
       <PwaUpdatePrompt />
       {/* <OnboardingModal /> */}
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <Outlet />
-    </SparkLayout>
+    </SparkLayout>,
   );
 }
 

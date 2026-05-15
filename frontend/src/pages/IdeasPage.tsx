@@ -127,7 +127,7 @@ export default function IdeasPage() {
         path="/ideas"
       />
 
-      <div className="animate-fade-in">
+      <div className="animate-ideas-content-in">
         <header className="mb-8 md:mb-10">
           <p className="font-geist-mono text-[11px] uppercase tracking-[0.3em] text-orange-400/90">Feed</p>
           <h1 className="mt-3 font-satoshi text-[28px] font-semibold tracking-tight text-white sm:text-[32px] md:text-[34px]">Ideas</h1>

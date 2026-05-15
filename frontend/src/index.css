@@ -40,7 +40,8 @@
 }
 
 html {
-  background-color: #060a14;
+  background-color: #000000;
+  color-scheme: dark;
   font-synthesis-weight: none
 }
 body {
@@ -50,7 +51,12 @@ body {
   line-height: 24px;
   overflow-x: hidden;
   overflow-y: scroll;
-  font-synthesis-weight: none
+  font-synthesis-weight: none;
+  background-color: #000000;
+}
+#root {
+  min-height: 100dvh;
+  background-color: #000000;
 }
 :root {
   --toastify-color-dark: #161B26;

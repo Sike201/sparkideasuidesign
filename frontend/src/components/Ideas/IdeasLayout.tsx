@@ -69,16 +69,6 @@ export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutPr
           idea={ideasData.selectedIdea}
         />
       )}
-
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.35s ease-out;
-        }
-      `}</style>
     </div>
   );
 }
