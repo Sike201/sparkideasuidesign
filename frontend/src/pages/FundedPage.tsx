@@ -218,8 +218,8 @@ export default function FundedPage() {
       />
 
       <div className="relative -mx-6 min-h-[calc(100vh-8rem)] md:-mx-10">
-        <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.42]">
-          <div className="h-full w-full origin-center -scale-y-100">
+        <div className="pointer-events-none fixed inset-0 z-0 bg-black">
+          <div className="h-full w-full origin-center -scale-y-100 opacity-[0.42]">
             <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
           </div>
         </div>

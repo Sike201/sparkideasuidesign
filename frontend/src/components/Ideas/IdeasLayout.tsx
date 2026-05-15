@@ -19,8 +19,8 @@ export default function IdeasLayout({ auth, ideasData, children }: IdeasLayoutPr
 
   return (
     <div className="relative min-h-screen bg-black text-white antialiased selection:bg-orange-500/20 selection:text-orange-200">
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.34]">
-        <div className="h-full w-full origin-center -scale-y-100">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-black">
+        <div className="h-full w-full origin-center -scale-y-100 opacity-[0.34]">
           <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
         </div>
       </div>

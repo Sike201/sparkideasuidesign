@@ -16,6 +16,7 @@ import Providers from "./providers/SolanaWalletProvider"
 import PwaInstall from "./pages/PwaInstall"
 import IdeasPage from "./pages/IdeasPage"
 import IdeaDetailPage from "./pages/IdeaDetailPage"
+import IdeasSectionLayout from "./pages/IdeasSectionLayout"
 import FundedPage from "./pages/FundedPage"
 import FundedMockDetailPage from "./pages/FundedMockDetailPage"
 import ExplanationPage from "./pages/ExplanationPage"
@@ -104,12 +105,11 @@ const router = createBrowserRouter([
             element: <IdeaLandingPage />,
           },
           {
-            path: ":slug",
-            element: <IdeaDetailPage />,
-          },
-          {
-            path: "",
-            element: <IdeasPage />,
+            element: <IdeasSectionLayout />,
+            children: [
+              { index: true, element: <IdeasPage /> },
+              { path: ":slug", element: <IdeaDetailPage /> },
+            ],
           },
         ],
       },

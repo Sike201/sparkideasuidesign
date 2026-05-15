@@ -1,15 +1,13 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, Link, useOutletContext } from "react-router-dom";
 import { Search, Loader2, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useIdeasAuth } from "@/hooks/useIdeasAuth";
-import { useIdeasData } from "@/hooks/useIdeasData";
-import IdeasLayout from "@/components/Ideas/IdeasLayout";
 import { IdeaCard, ideaCategories, Idea } from "@/components/Ideas";
 import { toggleIdeaVote } from "@/components/Ideas/feedVoteUtils";
 import { compareDemosByFundingCloseness, DEMO_FEED_IDEAS, fundingGoalRatio, isDemoIdeaId } from "@/data/demoFeedIdeas";
 import { SEO } from "@/components/SEO";
 import { ROUTES } from "@/utils/routes";
+import type { IdeasSectionOutletContext } from "@/pages/IdeasSectionLayout";
 
 function matchesFilters(idea: Idea, searchQuery: string, selectedCategories: Set<string>) {
   const q = searchQuery.toLowerCase();
@@ -44,8 +42,7 @@ const easeOut = [0.22, 1, 0.36, 1] as const;
 const CLOSEST_SPOTLIGHT_COUNT = 3;
 
 export default function IdeasPage() {
-  const auth = useIdeasAuth();
-  const ideasData = useIdeasData(auth);
+  const { auth, ideasData } = useOutletContext<IdeasSectionOutletContext>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const closestScrollerRef = useRef<HTMLDivElement>(null);
@@ -120,7 +117,7 @@ export default function IdeasPage() {
   );
 
   return (
-    <IdeasLayout auth={auth} ideasData={ideasData}>
+    <>
       <SEO
         title="Ideas"
         description="Browse and vote on community ideas. Submit your own idea and let the community decide what gets built next."
@@ -340,6 +337,6 @@ export default function IdeasPage() {
           </div>
         )}
       </div>
-    </IdeasLayout>
+    </>
   );
 }

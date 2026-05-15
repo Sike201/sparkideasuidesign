@@ -1,22 +1,19 @@
 import { useEffect, useCallback } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useIdeasAuth } from "@/hooks/useIdeasAuth";
-import { useIdeasData } from "@/hooks/useIdeasData";
 import { useIdeaComments } from "@/hooks/useIdeaComments";
-import IdeasLayout from "@/components/Ideas/IdeasLayout";
 import { IdeaDetailView } from "@/components/Ideas";
 import { SEO } from "@/components/SEO";
 import { backendSparkApi } from "@/data/api/backendSparkApi";
 import type { EditIdeaFields } from "@/components/Ideas/IdeaDetailView";
+import type { IdeasSectionOutletContext } from "@/pages/IdeasSectionLayout";
 
 export default function IdeaDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const auth = useIdeasAuth();
-  const ideasData = useIdeasData(auth);
+  const { auth, ideasData } = useOutletContext<IdeasSectionOutletContext>();
   const commentsHook = useIdeaComments(auth, ideasData);
 
   // Load idea by slug
@@ -24,7 +21,7 @@ export default function IdeaDetailPage() {
     if (slug) {
       ideasData.loadIdeaBySlug(slug);
     }
-  }, [slug]);
+  }, [slug, ideasData.loadIdeaBySlug]);
 
   const handleBack = () => {
     const state = location.state as { from?: string } | null;
@@ -63,7 +60,7 @@ export default function IdeaDetailPage() {
   }, [ideasData.selectedIdea, auth.userProfile.xId, slug]);
 
   return (
-    <IdeasLayout auth={auth} ideasData={ideasData}>
+    <>
       {ideasData.selectedIdea && (
         <SEO
           title={ideasData.selectedIdea.title}
@@ -103,6 +100,6 @@ export default function IdeaDetailPage() {
           onSaveEdit={handleSaveEdit}
         />
       ) : null}
-    </IdeasLayout>
+    </>
   );
 }

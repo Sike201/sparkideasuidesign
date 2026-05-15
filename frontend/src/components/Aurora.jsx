@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 import './Aurora.css';
 
@@ -114,9 +114,16 @@ export default function Aurora(props) {
   const propsRef = useRef(props);
   propsRef.current = props;
 
+  const accentMid = useMemo(() => {
+    const stops = colorStops ?? ['#5227FF', '#7cff67', '#5227FF'];
+    return stops[1] ?? stops[0] ?? '#ea580c';
+  }, [colorStops]);
+
+  const [gpuReady, setGpuReady] = useState(false);
   const ctnDom = useRef(null);
 
   useEffect(() => {
+    setGpuReady(false);
     const ctn = ctnDom.current;
     if (!ctn) return;
 
@@ -170,6 +177,7 @@ export default function Aurora(props) {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
+    let painted = false;
     const update = t => {
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
@@ -182,6 +190,14 @@ export default function Aurora(props) {
         return [c.r, c.g, c.b];
       });
       renderer.render({ scene: mesh });
+      if (!painted) {
+        painted = true;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setGpuReady(true);
+          });
+        });
+      }
     };
     animateId = requestAnimationFrame(update);
 
@@ -198,5 +214,18 @@ export default function Aurora(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amplitude]);
 
-  return <div ref={ctnDom} className="aurora-container" />;
+  return (
+    <div className="aurora-container relative isolate">
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 z-0 bg-black transition-opacity duration-200 ease-out ${
+          gpuReady ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          backgroundImage: `radial-gradient(ellipse 110% 90% at 50% 100%, ${accentMid}55 0%, transparent 58%)`,
+        }}
+      />
+      <div ref={ctnDom} className="relative z-[1] h-full min-h-[1px] w-full" />
+    </div>
+  );
 }

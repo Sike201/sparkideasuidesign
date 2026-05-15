@@ -26,8 +26,8 @@ export default function FundedMockDetailPage() {
     return (
       <IdeasLayout auth={auth} ideasData={ideasData}>
         <div className="relative">
-          <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.32]">
-            <div className="h-full w-full origin-center -scale-y-100">
+          <div className="pointer-events-none fixed inset-0 z-0 bg-black">
+            <div className="h-full w-full origin-center -scale-y-100 opacity-[0.32]">
               <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
             </div>
           </div>
@@ -49,8 +49,8 @@ export default function FundedMockDetailPage() {
       <SEO title={`${project.title} · Funded`} description={project.tagline} path={`/funded/mock/${project.slug}`} />
 
       <div className="relative">
-        <div className="pointer-events-none fixed inset-0 z-0 opacity-[0.38]">
-          <div className="h-full w-full origin-center -scale-y-100">
+        <div className="pointer-events-none fixed inset-0 z-0 bg-black">
+          <div className="h-full w-full origin-center -scale-y-100 opacity-[0.38]">
             <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
           </div>
         </div>

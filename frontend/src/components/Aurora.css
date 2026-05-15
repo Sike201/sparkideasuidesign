@@ -1,4 +1,6 @@
 .aurora-container {
   width: 100%;
   height: 100%;
+  /* Solid base until WebGL first frame — avoids grey/white flash under semi-transparent stacks */
+  background-color: #000000;
 }

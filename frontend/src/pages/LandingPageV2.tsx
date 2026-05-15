@@ -109,11 +109,11 @@ export default function LandingPageV2() {
     <div className="relative min-h-screen bg-black text-neutral-400 antialiased selection:bg-orange-500/20 selection:text-orange-200">
       <SEO path="/" />
 
-      <div className="pointer-events-none fixed inset-0 z-0">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-black">
         <div className="h-full w-full origin-center -scale-y-100 opacity-[0.55]">
           <Aurora colorStops={AURORA_STOPS} amplitude={1} blend={0.5} />
         </div>
-        </div>
+      </div>
 
       <div className="relative z-10">
         <motion.header
